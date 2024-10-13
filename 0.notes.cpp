@@ -20,6 +20,8 @@ void print()
     cout << c;
 }
 
+
+
 void difference(int &nums, int num)
 
 {
@@ -156,6 +158,8 @@ int main()
     int arr[] = {5, 3, 8, 2, 10};
     int n = 5;
     min_max(arr,n);
+
+    cout << "Hello World" << endl;
 
     return 0;
 }
