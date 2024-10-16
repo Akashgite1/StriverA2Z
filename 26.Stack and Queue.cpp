@@ -294,17 +294,87 @@ public:
     // O(1) space complexity
 };
 
-//* implement stack using queue
+//* balance paranthesis using stack
+bool balance_paranthesis(string s)
+{
+    stack<char> st;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == '(' || s[i] == '{' || s[i] == '[')
+        {
+            st.push(s[i]);
+        }
+        else
+        {
+            if (st.empty())
+            {
+                return false;
+            }
+            char ch = st.top();
+            st.pop();
+            if (s[i] == ')' && ch != '(')
+            {
+                return false;
+            }
+            if (s[i] == '}' && ch != '{')
+            {
+                return false;
+            }
+            if (s[i] == ']' && ch != '[')
+            {
+                return false;
+            }
+        }
+    }
+    return st.empty();
+}
+
+//* min stack using stack
+class min_stack
+{
+    public:
+    stack<pair<int,int>> s;
+    void push(int val)
+    {
+        if(s.empty())
+        {
+            // for the first value 
+            s.push({val,val});
+        }
+        else
+        {
+            // 
+            int mn = min(val,s.top().second);
+            s.push({val,mn});
+        }
+    }
+
+    int getMin()
+    {
+        return s.top().second;
+    }
+    
+    int top()
+    {
+        return s.top().first;
+    }
+
+    void pop()
+    {
+        s.pop();
+    }
+    
+};
+
 
 
 int main()
 {
     // creating the class object using that object we can access the class
-    // functions or members function 
-    // stack_implementation_using_array  is a class and s is the object 
+    // functions or members function
+    // stack_implementation_using_array  is a class and s is the object
     // now for accesing the class functions such as push(),pop(),getTop(),getSize()
     // we just have to use s front of the function name and boom we can access the function
-    
 
     //! Stack Implementation Using Array
     // stack_implementation_using_array s;
@@ -352,19 +422,30 @@ int main()
     // cout << s.getTop() << endl;
 
     //! Queue Implementation Using Linked List
-    Queue_implementation_using_linked_list q;
-    q.push(1);
-    q.push(2);
-    q.push(3);
-    q.push(4);
-    q.push(5);
-    cout << q.getFront() << endl;
-    q.pop();
-    cout << q.getFront() << endl;
-    cout << q.getSize() << endl;
-    q.pop();
-    q.pop();
-    cout << q.getFront() << endl;
+    // Queue_implementation_using_linked_list q;
+    // q.push(1);
+    // q.push(2);
+    // q.push(3);
+    // q.push(4);
+    // q.push(5);
+    // cout << q.getFront() << endl;
+    // q.pop();
+    // cout << q.getFront() << endl;
+    // cout << q.getSize() << endl;
+    // q.pop();
+    // q.pop();
+    // cout << q.getFront() << endl;
+
+    //! balance paranthesis using stack
+    // string s = "{[()]}";
+    // if (balance_paranthesis(s))
+    // {
+    //     cout << "Balanced" << endl;
+    // }
+    // else
+    // {
+    //     cout << "Not Balanced" << endl;
+    // }
 
 
 

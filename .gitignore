@@ -1,0 +1,12 @@
+// used for ignoring files in git we just add the files name in this file and git will ignore them
+
+// some imporant files like api keys, passwords, etc should be added to gitignore file
+
+//  passwords files or api keys we should not add to git repository
+
+// node_modules is a folder that contains all the dependencies of the project so we should not add it to git repository
+ 
+
+node_modules
+test.cpp
+
