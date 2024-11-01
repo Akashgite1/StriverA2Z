@@ -1,5 +1,11 @@
 #include <bits/stdc++.h>
 #include <iostream>
+#include <stack>
+#include <queue>
+#include <algorithm>
+#include <string>
+#include <utility>
+#include <vector>
 
 using namespace std;
 
@@ -332,20 +338,20 @@ bool balance_paranthesis(string s)
 //* min stack using stack
 class min_stack
 {
-    public:
-    stack<pair<int,int>> s;
+public:
+    stack<pair<int, int>> s;
     void push(int val)
     {
-        if(s.empty())
+        if (s.empty())
         {
-            // for the first value 
-            s.push({val,val});
+            // for the first value
+            s.push({val, val});
         }
         else
         {
-            // 
-            int mn = min(val,s.top().second);
-            s.push({val,mn});
+            //
+            int mn = min(val, s.top().second);
+            s.push({val, mn});
         }
     }
 
@@ -353,7 +359,7 @@ class min_stack
     {
         return s.top().second;
     }
-    
+
     int top()
     {
         return s.top().first;
@@ -363,14 +369,372 @@ class min_stack
     {
         s.pop();
     }
-    
 };
 
+//! arthmatic expression evaluation
+//* prefix infix postfix conversion
+
+int precedence(char c)
+{
+    // lowest precedence
+    if (c == '+' || c == '-')
+    {
+        return 1;
+    }
+    // medium precedence
+    else if (c == '*' || c == '/')
+    {
+        return 2;
+    }
+    // highest precedence
+    else if (c == '^')
+    {
+        return 3;
+    }
+    // any other character
+    return 0;
+}
+
+// infix to postfix conversion
+string infix_to_postfix(string s)
+{
+    int i = 0;
+    stack<char> st;
+    string ans = ""; // Initialize as an empty string
+    int n = s.size();
+
+    while (i < n)
+    {
+        // if ith character is an operand
+        if ((s[i] >= 'A' && s[i] <= 'Z') || // Uppercase
+            (s[i] >= 'a' && s[i] <= 'z') || // Lowercase
+            (s[i] >= '0' && s[i] <= '9'))   // Digits
+        {
+            ans += s[i]; // Append operand to result
+        }
+        // if ith character is '('
+        else if (s[i] == '(')
+        {
+            st.push(s[i]);
+        }
+        // if ith character is ')'
+        else if (s[i] == ')')
+        {
+            while (!st.empty() && st.top() != '(')
+            {
+                ans += st.top();
+                st.pop();
+            }
+            if (!st.empty())
+            {             // Check if stack is not empty before popping
+                st.pop(); // pop '('
+            }
+        }
+        // if ith character is an operator
+        else
+        {
+            while (!st.empty() && precedence(s[i]) <= precedence(st.top()))
+            {
+                ans += st.top();
+                st.pop();
+            }
+            st.push(s[i]); // Push the current operator onto the stack
+        }
+        i++;
+    }
+
+    // pop all the operators left in the stack
+    while (!st.empty())
+    {
+        ans += st.top();
+        st.pop();
+    }
+
+    return ans;
+}
+
+// infix to prefix conversion
+string infix_to_prefix(string s)
+{
+    reverse(s.begin(), s.end());
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == '(')
+        {
+            s[i] = ')';
+        }
+        else if (s[i] == ')')
+        {
+            s[i] = '(';
+        }
+    }
+    string ans = infix_to_postfix(s);
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
+
+// prefix to infix conversion
+string prefix_to_infix(string s)
+{
+    stack<string> st;
+    for (int i = s.size() - 1; i >= 0; i--)
+    {
+        if ((s[i] >= 'A' && s[i] <= 'Z') || // Uppercase
+            (s[i] >= 'a' && s[i] <= 'z') || // Lowercase
+            (s[i] >= '0' && s[i] <= '9'))   // Digits
+        {
+            st.push(string(1, s[i])); // Append operand to result
+        }
+        else
+        {
+            string op1 = st.top();
+            st.pop();
+            string op2 = st.top();
+            st.pop();
+            st.push("(" + op1 + s[i] + op2 + ")");
+        }
+    }
+    return st.top();
+}
+
+// prefix to postfix conversion
+string prefix_to_postfix(string s)
+{
+    stack<string> st;
+    for (int i = s.size() - 1; i >= 0; i--)
+    {
+        if ((s[i] >= 'A' && s[i] <= 'Z') || // Uppercase
+            (s[i] >= 'a' && s[i] <= 'z') || // Lowercase
+            (s[i] >= '0' && s[i] <= '9'))   // Digits
+        {
+            st.push(string(1, s[i])); // Append operand to result
+        }
+        else
+        {
+            string op1 = st.top();
+            st.pop();
+            string op2 = st.top();
+            st.pop();
+            st.push(op1 + op2 + s[i]);
+        }
+    }
+    return st.top();
+}
+
+// postfix to infix conversion
+string postfix_to_infix(string s)
+{
+    stack<string> st;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if ((s[i] >= 'A' && s[i] <= 'Z') || // Uppercase
+            (s[i] >= 'a' && s[i] <= 'z') || // Lowercase
+            (s[i] >= '0' && s[i] <= '9'))   // Digits
+        {
+            st.push(string(1, s[i])); // Append operand to result
+        }
+        else
+        {
+            string op2 = st.top();
+            st.pop();
+            string op1 = st.top();
+            st.pop();
+            st.push("(" + op1 + s[i] + op2 + ")");
+        }
+    }
+    return st.top();
+}
+
+// postfix to prefix conversion
+string postfix_to_prefix(string s)
+{
+    stack<string> st;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if ((s[i] >= 'A' && s[i] <= 'Z') || // Uppercase
+            (s[i] >= 'a' && s[i] <= 'z') || // Lowercase
+            (s[i] >= '0' && s[i] <= '9'))   // Digits
+        {
+            st.push(string(1, s[i])); // Append operand to result
+        }
+        else
+        {
+            string op2 = st.top();
+            st.pop();
+            string op1 = st.top();
+            st.pop();
+            st.push(s[i] + op1 + op2);
+        }
+    }
+    return st.top();
+}
+
+//* monotonic stack means stack in which all the elements are in increasing or decreasing order
+//* Next Greater Element
+// brtute force approach
+vector<int> next_greater_element(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<int> ans(n, -1);
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (nums[j] > nums[i])
+            {
+                ans[i] = nums[j];
+                break;
+            }
+        }
+    }
+    return ans;
+}
+
+// optimal using stack approach
+vector<int> next_greater_element_using_stack(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<int> ans(n, -1); // Initialize answer vector with -1
+    stack<int> st;          // Stack to store indices
+
+    for (int i = 0; i < n; i++)
+    {
+        // While stack is not empty and current element is greater than the element
+        // at the index stored at the top of the stack
+        while (!st.empty() && nums[i] > nums[st.top()])
+        {
+            ans[st.top()] = nums[i]; // Update the answer for the index at the top of the stack
+            st.pop();                // Pop the index after updating
+        }
+
+        st.push(i); // Push current index to the stack
+    }
+
+    return ans;
+}
+
+// using reverse loop approach
+vector<int> next_greater_element_using_stack_using_revers_loop(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<int> ans(n, -1); // Initialize answer vector with -1
+    stack<int> st;          // Stack to store the next greater elements
+
+    // Traverse the array from right to left
+    for (int i = n - 1; i >= 0; i--)
+    {
+        // Pop elements from the stack that are less than or equal to the current element
+        while (!st.empty() && st.top() <= nums[i])
+        {
+            st.pop();
+        }
+
+        // If stack is not empty, the top of the stack is the next greater element
+        if (!st.empty())
+        {
+            ans[i] = st.top();
+        }
+
+        // Push the current element to the stack
+        st.push(nums[i]);
+    }
+
+    return ans;
+}
+
+// next greater element II (circular array)
+// brute force approach
+vector<int> find_next_greater(vector<int> num)
+{
+    vector<int> ans(num.size(), -1);
+    int n = num.size();
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i + 1; j < i + n; j++)
+        {
+            int index = j % n;
+            if (num[index] > num[i])
+            {
+                ans[i] = num[index];
+                break;
+            }
+        }
+    }
+
+    return ans;
+}
+
+// optimal approach
+vector<int> find_next_greater_element(vector<int> num)
+{
+    vector<int> ans(num.size(), -1);
+    stack<int> st;
+
+    for (int i = 2 * num.size() - 1; i >= 0; i--)
+    {
+        while (!st.empty() && num[i % num.size()] >= num[st.top()])
+        {
+            st.pop();
+        }
+        if (i < num.size())
+        {
+            if (!st.empty())
+            {
+                ans[i] = num[st.top()];
+            }
+        }
+        st.push(i % num.size());
+    }
+    return ans;
+}
+
+// next smaller elment from the left side brute force approach
+vector<int> next_smaller_element_brute_force(vector<int> &nums)
+{
+    int n = nums.size();
+    // [4, 5, 2, 10, 8]
+    //  0  1  2  3   4  i-1  0-1 = -1
+    //
+    vector<int> ans(n, -1);
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i - 1; j >= 0; j--)
+        {
+            if (nums[j] < nums[i])
+            {
+                ans[i] = nums[j];
+                break;
+            }
+        }
+    }
+    return ans;
+}
+
+// optimal approach using stack
+vector<int> privious_small_elemenet(vector<int> &num)
+{
+    int n = num.size();
+    vector<int> ans(n, -1);
+    stack<int> st;
+
+    for (int i = 0; i < n; i++)
+    {
+        while (!st.empty() && st.top() >= num[i])
+        {
+            st.pop();
+        }
+
+        ans[i] = st.empty() ? -1 : st.top();
+
+        st.push(num[i]);
+    }
+    return ans;
+}
 
 
 int main()
 {
-    // creating the class object using that object we can access the class
+    //! creating the class object using that object we can access the class
     // functions or members function
     // stack_implementation_using_array  is a class and s is the object
     // now for accesing the class functions such as push(),pop(),getTop(),getSize()
@@ -447,7 +811,102 @@ int main()
     //     cout << "Not Balanced" << endl;
     // }
 
+    //! min stack using stack
+    // min_stack s;
+    // s.push(1);
+    // s.push(2);
+    // s.push(3);
+    // s.push(4);
+    // cout << s.getMin() << endl;
 
+    //! infix to postfix conversion
+    // string s = "(p + q) * (m - n)";
+    // cout << infix_to_postfix(s) << endl;
+
+    //! infix to prefix conversion
+    // string s1 = "*-A/BC-/AKL";
+    // cout << infix_to_prefix(s1) << endl;
+
+    //! prefix to infix conversion
+    // string s2 = "*-A/BC-/AKL";
+    // cout << prefix_to_infix(s2) << endl;
+
+    //! prefix to postfix conversion
+    // string s3 = "*-A/BC-/AKL";
+    // cout << prefix_to_postfix(s3) << endl;
+
+    //! postfix to infix conversion
+    // string s4 = "ABC/-AK/L-*";
+    // cout << postfix_to_infix(s4) << endl;
+
+    //! postfix to prefix conversion
+    // string s5 = "ABC/-AK/L-*";
+    // cout << postfix_to_prefix(s5) << endl;
+
+    //! Next Greater Element
+    // vector<int> nums = {2, 1, 3 , 6, 5, 4 , 8};
+    // vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8};
+    // vector<int> ans = next_greater_element(nums);
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     cout << ans[i] << " ";
+    // }
+    // cout << endl;
+
+    //! next greater element using reverse lopp
+    // vector<int> ans1 = next_greater_element_using_stack_using_revers_loop(nums);
+    // for (int i = 0; i < ans1.size(); i++)
+    // {
+    //     cout << ans1[i] << " ";
+    // }
+    // cout << endl;
+
+    //! Next Greater Element using stack
+    // vector<int> ans1 = next_greater_element_using_stack(nums);
+    // for (int i = 0; i < ans1.size(); i++)
+    // {
+    //     cout << ans1[i] << " ";
+    // }
+    // cout << endl;
+
+    //! Next Greater Element II (Circular Array)
+    //! brute force approach
+    // vector<int> nums1 = {1, 2, 1};
+    // vector<int> ans2 = find_next_greater(nums1);
+    // for (int i = 0; i < ans2.size(); i++)
+    // {
+    //     cout << ans2[i] << " ";
+    // }
+    // cout << endl;
+
+    //! optimal approach
+    // vector<int> nums1 = {1, 2, 1};
+    // vector<int> ans2 = find_next_greater_element(nums1);
+    // for (int i = 0; i < ans2.size(); i++)
+    // {
+    //     cout << ans2[i] << " ";
+    // }
+    // cout << endl;
+
+    //! next smaller element from the left side brute force approach
+    // vector<int> nums = {4, 5, 2, 10, 8};
+    // vector<int> ans = next_smaller_element_brute_force(nums);
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     cout << ans[i] << " ";
+    // }
+    // cout << endl;
+
+    //! optimal approach
+    vector<int> nums = {4, 5, 2, 10, 8};
+    vector<int> ans = privious_small_elemenet(nums);
+    for (int i = 0; i < ans.size(); i++)
+    {
+        cout << ans[i] << " ";
+    }
+    cout << endl;
+
+    
 
     return 0;
 }
