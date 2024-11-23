@@ -731,6 +731,8 @@ vector<int> privious_small_elemenet(vector<int> &num)
     return ans;
 }
 
+// online stock span
+ 
 
 int main()
 {
