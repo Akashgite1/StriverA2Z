@@ -732,7 +732,27 @@ vector<int> privious_small_elemenet(vector<int> &num)
 }
 
 // online stock span
- 
+class StockSpanner
+{
+public:
+    stack<pair<int, int>> st;
+    StockSpanner()
+    {
+    }
+
+    int next(int price)
+    {
+        int span = 1;
+        while (!st.empty() && st.top().first <= price)
+        {
+            span += st.top().second;
+            st.pop();
+        }
+        st.push({price, span});
+        return span;
+    }
+};
+
 
 int main()
 {
@@ -908,6 +928,7 @@ int main()
     }
     cout << endl;
 
+    
     
 
     return 0;
