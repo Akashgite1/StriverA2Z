@@ -1,5 +1,48 @@
-#include <bits/stdc++.h>
-#include <iostream>
+//! libaray required for the copetitive programming
+#include <bits/stdc++.h> // for most of the stl libraries
+#include <iostream> // for input and output stream
+#include <vector> // for vector
+#include <algorithm> // for sort and other algorithm
+#include <string> // for string
+#include <unordered_map> // for unordered map
+#include <map> // for map
+#include <set> // for set
+#include <unordered_set> // for unordered set
+#include <queue> // for queue
+#include <stack> // for stack
+#include <list> // for list
+#include <deque> // for deque
+#include <forward_list> // for forward list
+#include <array> // for array
+#include <numeric> // for numeric
+#include <utility> // for pair and other utility functions
+#include <iterator> // for iterator
+#include <functional> // for functional
+#include <memory> // for memory
+#include <typeinfo> // for type info
+#include <type_traits> // for type traits
+#include <bitset> // for bitset
+#include <tuple> // for tuple
+#include <optional> // for optional
+#include <variant> // for variant
+#include <any> // for any means any type of data
+#include <complex> // for complex number
+#include <valarray> // for valarray
+#include <chrono> // for chrono
+#include <random> // for random
+#include <cstddef> // for cstddef
+#include <cstdlib> // for cstdlib
+#include <cctype> // for cctype
+#include <cstring> // for cstring
+#include <cstdio> // for cstdio
+#include <cstdarg> // for cstdarg
+#include <cmath> // for cmath
+#include <ctime> // for ctime
+#include <climits> // for climits
+#include <cfloat> // for cfloat
+#include <cstdint> // for cstdint
+#include <cinttypes> // for cinttypes
+#include <limits> // for limits
 
 using namespace std;
 
@@ -20,9 +63,7 @@ void print()
     cout << c;
 }
 
-
-
-void difference(int &nums, int num)
+void difference()
 
 {
     // end plays role her with &nums its pass-by-reference
@@ -66,7 +107,7 @@ void primenumebrs()
       */
 }
 
-// declaring the min and max and accourding usage
+//! declaring the min and max and accourding usage
 void min_max(int arr[], int n)
 {
     int min = INT_MAX; // Initialize min to the maximum possible integer value
@@ -136,7 +177,7 @@ void min_max(int arr[], int n)
     //   So, even though min and max may seem counterintuitive given  their initializations, they correctly hold the minimum and  maximum values encountered during the iteration.
 }
 
-// swap function 
+//! swap function 
 void swap(int a, int b)
 {
     int temp =  a; // temp is temparary variable we assign a value to it 
@@ -153,13 +194,61 @@ void swap(int a, int b)
      // so the temp is again empty and a = 15 and b = 10
 }
 
+// Rorating the 2d array 90degree
+void rotate(int arr[3][3])
+{
+    // 1 2 3
+    // 4 5 6
+    // 7 8 9   sample array
+
+    // 7 4 1
+    // 8 5 2
+    // 9 6 3  -- after rotating 90 degree rotation
+
+    // 7 8 9
+    // 4 5 6
+    // 1 2 3 --  180 degree rotation
+
+    // 1 4 7
+    // 2 5 8
+    // 3 6 9 -- 270 degree rotation
+
+    // 3 2 1
+    // 6 5 4
+    // 9 8 7 -- 360 degree rotation
+
+
+    // easist way to rotate the 2d array is to take the transpose of the array
+    // and then reverse the array row wise or column wise
+
+    // sample array         // transpose         // reverse
+    // 1 2 3                // 1 4 7             // 7 4 1
+    // 4 5 6                // 2 5 8             // 8 5 2
+    // 7 8 9                // 3 6 9             // 9 6 3
+    
+} 
+
+// comparator function vs lambada function
+
+// comparator function
+bool compare(int a, int b)
+{
+    return a < b; // if a is less then b then return true
+}  
+// it takes two arguments and return the boolean value true or false
+
+
+// lambada function
+auto comparee = [](int a, int b) { return a < b; }; // it takes two arguments and return the boolean value true or falseWe can use a lambda function to define a custom comparison function for sorting. A lambda function is an anonymous function that can be used as a function object. It is defined using the syntax [capture list] (parameters) { function body }. In this case, the lambda function takes two integers a and b as parameters and returns true if a is less than b, and false otherwise. This lambda function can be used as a custom comparison function in the sort function to sort a vector of integers in ascending order.
+
+
 int main()
 {
-    int arr[] = {5, 3, 8, 2, 10};
-    int n = 5;
-    min_max(arr,n);
 
-    cout << "Hello World" << endl;
-
+    // int arr[] = {5, 3, 8, 2, 10};
+    // int n = 5;
+    // min_max(arr,n);
+    // cout << "Hello World" << endl;
+     
     return 0;
 }
