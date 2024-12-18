@@ -255,13 +255,136 @@ int jump(vector<int> &nums)
 }
 
 //! Minimum Platforms
+int findPlatform(vector<int> &arr, vector<int> &dep)
+{
+    // optimal solution
+    int n = arr.size();
+    sort(arr.begin(), arr.end());
+    sort(dep.begin(), dep.end());
+
+    int i = 0;
+    int j = 0;
+    int cnt = 0;
+    int maxcnt = 0;
+
+    while (i < n)
+    {
+        if (arr[i] <= dep[j])
+        {
+            cnt++;
+            i++;
+        }
+        else
+        {
+            cnt--;
+            j++;
+        }
+        maxcnt = max(maxcnt, cnt);
+    }
+    return maxcnt;
+}
+
+//! job sequencing problem
+// 1. Using struct
+// We define a struct to store each job's ID, deadline, and profit. This allows us to neatly organize and manage the job-related data
+
+// struct Job
+// {
+//     int id;       // Job ID
+//     int deadline; // Deadline of the job
+//     int profit;   // Profit of the job
+// };
+
+// // Comparator function to sort jobs by profit in descending order
+// bool compare(const Job &a, const Job &b)
+// {
+//     return a.profit > b.profit;
+// }
+
+// vector<int> jobSequencing(vector<Job> &jobs, int n)
+// {
+//     // Sort jobs by profit in descending order using the comparator
+//     sort(jobs.begin(), jobs.end(), compare);
+
+//     vector<bool> slots(n, false); // To track available slots
+//     vector<int> result(2, 0);     // Store total jobs and total profit
+
+//     // Iterate over the jobs
+//     for (size_t i = 0; i < jobs.size(); i++)
+//     {
+//         // Check available slots from job deadline backwards
+//         for (int j = min(n, jobs[i].deadline) - 1; j >= 0; j--)
+//         {
+//             if (!slots[j])
+//             {
+//                 slots[j] = true;             // Mark slot as occupied
+//                 result[0]++;                 // Increment job count
+//                 result[1] += jobs[i].profit; // Add job profit
+//                 break;
+//             }
+//         }
+//     }
+
+//     return result;
+// }
+
+//! 2. Using tuple
+// tuple allows you to store different types of data in a single object, which is helpful here as each job consists of three data types (int).
+// bool compare(tuple<int, int, int> a, tuple<int, int, int> b) {
+//     return get<2>(a) > get<2>(b);  // Sort by profit (third element)
+// }
+// vector<int> jobSequencing(vector<tuple<int, int, int>>& jobs, int n) {
+//     sort(jobs.begin(), jobs.end(), compare);  // Sort jobs by profit
+//     vector<bool> slots(n, false);  // To track available slots
+//     vector<int> result(2, 0);  // Store total jobs and total profit
+//     for (int i = 0; i < n; i++) {
+//         for (int j = min(n, get<1>(jobs[i])) - 1; j >= 0; j--) {  // Get the deadline from the tuple
+//             if (!slots[j]) {
+//                 slots[j] = true;  // Mark slot as occupied
+//                 result[0]++;  // Increment job count
+//                 result[1] += get<2>(jobs[i]);  // Add job profit
+//                 break;
+//             }
+//         }
+//     }
+//     return result;
+// }
+
+//! 3. Using pair
+// pair is a simpler version of a tuple and can be used if you are just working with two pieces of data, but for the job sequencing, we can use it for pairing the deadline and profit, with the job ID being handled separately
+// struct Job {
+//     int id;
+//     pair<int, int> deadline_profit;  // Pair of deadline and profit
+// };
+// bool compare(Job a, Job b) {
+//     return a.deadline_profit.second > b.deadline_profit.second;  // Sort by profit
+// }
+// vector<int> jobSequencing(vector<Job>& jobs, int n) {
+//     sort(jobs.begin(), jobs.end(), compare);  // Sort jobs by profit
+//     vector<bool> slots(n, false);  // To track available slots
+//     vector<int> result(2, 0);  // Store total jobs and total profit
+//     for (int i = 0; i < n; i++) {
+//         int deadline = jobs[i].deadline_profit.first;
+//         for (int j = min(n, deadline) - 1; j >= 0; j--) {
+//             if (!slots[j]) {
+//                 slots[j] = true;  // Mark slot as occupied
+//                 result[0]++;  // Increment job count
+//                 result[1] += jobs[i].deadline_profit.second;  // Add profit
+//                 break;
+//             }
+//         }
+//     }
+//     return result;
+// }
+
+
 
 
 
 int main()
 {
 
-    // greedy algorithm and its solution
+    //! greedy algorithm and its solution
     //! Assign cookies
     // vector<int> g = {1,2,3};
     // vector<int> s = {1,1};
@@ -300,9 +423,30 @@ int main()
     // cout << checkValidString(s) << endl; // 1
 
     //! N meetings in one room
-    vector<int> start = {10, 12, 20};
-    vector<int> end = {20, 25, 30};
-    cout << maxMeeting(start, end) << endl; // 4
+    // vector<int> start = {10, 12, 20};
+    // vector<int> end = {20, 25, 30};
+    // cout << maxMeeting(start, end) << endl; // 4
+
+    //! jump game
+    // vector<int> nums = {2, 3, 1, 1, 4};
+    // cout << canJump(nums) << endl; // 1
+
+    //! Jump game II
+    // vector<int> nums = {2, 3, 1, 1, 4};
+    // cout << jump(nums) << endl; // 2
+
+    //! Minimum Platforms
+    // vector<int> arr = {900, 940, 950, 1100, 1500, 1800};
+    // vector<int> dep = {910, 1200, 1120, 1130, 1900, 2000};
+    // cout << findPlatform(arr, dep) << endl; // 3
+
+    //! job sequencing problem
+    // vector<Job> jobs = {{1, 4, 20}, {2, 1, 10}, {3, 1, 40}, {4, 1, 30}};
+    // int n = jobs.size();
+    // vector<int> result = jobSequencing(jobs, n);
+    // cout << "Max Jobs: " << result[0] << ", Max Profit: " << result[1] << endl;
+
+
 
     return 0;
 }
