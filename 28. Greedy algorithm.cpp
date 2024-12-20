@@ -377,9 +377,50 @@ int findPlatform(vector<int> &arr, vector<int> &dep)
 //     return result;
 // }
 
+ //! 135. Candy
+ int candy(vector<int>& ratings) {
+        int n = ratings.size();
+        vector<int> left(n, 1), right(n, 1);
+
+        // Calculating the left candy distribution
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                left[i] = left[i - 1] + 1;
+            }
+        }
+
+        // Calculating the right candy distribution
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                right[i] = right[i + 1] + 1;
+            }
+        }
+
+        // Calculating the total candies
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            sum += max(left[i], right[i]);
+        }
+
+        return sum;
+    }
 
 
-
+//! Shortest Job first 
+ long long solve(vector<int>& bt) {
+        // code here
+        sort(bt.begin(), bt.end());
+        int time =0;  int waitingTime =0; 
+        int n= bt.size();
+        
+        for(int i=0; i<n; i++)
+        {
+            waitingTime += time;
+            
+            time += bt[i];
+        }
+        return (waitingTime / n); // O(n) + O(n log n) TC and sc O(1)
+    }
 
 int main()
 {
@@ -445,7 +486,14 @@ int main()
     // int n = jobs.size();
     // vector<int> result = jobSequencing(jobs, n);
     // cout << "Max Jobs: " << result[0] << ", Max Profit: " << result[1] << endl;
+    
+    //! candy
+    // vector<int> ratings = {1, 0, 2};
+    // cout << candy(ratings) << endl; // 5
 
+    //! Shortest Job first
+    // vector<int> bt = {1, 2, 3, 4, 5};
+    // cout << solve(bt) << endl; // 3
 
 
     return 0;
