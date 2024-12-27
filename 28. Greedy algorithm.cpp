@@ -377,50 +377,188 @@ int findPlatform(vector<int> &arr, vector<int> &dep)
 //     return result;
 // }
 
- //! 135. Candy
- int candy(vector<int>& ratings) {
-        int n = ratings.size();
-        vector<int> left(n, 1), right(n, 1);
+//! 135. Candy
+int candy(vector<int> &ratings)
+{
+    int n = ratings.size();
+    vector<int> left(n, 1), right(n, 1);
 
-        // Calculating the left candy distribution
-        for (int i = 1; i < n; i++) {
-            if (ratings[i] > ratings[i - 1]) {
-                left[i] = left[i - 1] + 1;
-            }
-        }
-
-        // Calculating the right candy distribution
-        for (int i = n - 2; i >= 0; i--) {
-            if (ratings[i] > ratings[i + 1]) {
-                right[i] = right[i + 1] + 1;
-            }
-        }
-
-        // Calculating the total candies
-        int sum = 0;
-        for (int i = 0; i < n; i++) {
-            sum += max(left[i], right[i]);
-        }
-
-        return sum;
-    }
-
-
-//! Shortest Job first 
- long long solve(vector<int>& bt) {
-        // code here
-        sort(bt.begin(), bt.end());
-        int time =0;  int waitingTime =0; 
-        int n= bt.size();
-        
-        for(int i=0; i<n; i++)
+    // Calculating the left candy distribution
+    for (int i = 1; i < n; i++)
+    {
+        if (ratings[i] > ratings[i - 1])
         {
-            waitingTime += time;
-            
-            time += bt[i];
+            left[i] = left[i - 1] + 1;
         }
-        return (waitingTime / n); // O(n) + O(n log n) TC and sc O(1)
     }
+
+    // Calculating the right candy distribution
+    for (int i = n - 2; i >= 0; i--)
+    {
+        if (ratings[i] > ratings[i + 1])
+        {
+            right[i] = right[i + 1] + 1;
+        }
+    }
+
+    // Calculating the total candies
+    int sum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        sum += max(left[i], right[i]);
+    }
+
+    return sum;
+}
+
+//! Shortest Job first
+long long solve(vector<int> &bt)
+{
+    // code here
+    sort(bt.begin(), bt.end());
+    int time = 0;
+    int waitingTime = 0;
+    int n = bt.size();
+
+    for (int i = 0; i < n; i++)
+    {
+        waitingTime += time;
+
+        time += bt[i];
+    }
+    return (waitingTime / n); // O(n) + O(n log n) TC and sc O(1)
+}
+
+//! insert interveals
+// given the intervals array [1,3],[6,9], and we have to merge an interval in it [2,5]
+// so there will be no overlapping intervals [1,5],[6,9]
+vector<vector<int>> insert(vector<vector<int>> &in, vector<int> &newinterval)
+{
+
+    vector<vector<int>> result;
+    int n = in.size();
+    int i = 0;
+
+    // we are pushing the smaller intervals then newintervals in result
+    // array
+    while (i < n && in[i][1] < newinterval[0])
+    {
+        result.push_back(in[i]);
+        i++;
+    }
+
+    // merging the overlapping for fitting the intervals in array by updting
+    // the newintervals
+    while (i < n && in[i][0] <= newinterval[1])
+    {
+        // changing the start of new interval
+        newinterval[0] = min(newinterval[0], in[i][0]);
+
+        // changing the end of interval
+        newinterval[1] = max(newinterval[1], in[i][1]);
+
+        i++;
+    }
+
+    // pushing the new interval on its correct position
+    result.push_back(newinterval);
+
+    // push remeaining intevals into result array
+    while (i < n)
+    {
+        result.push_back(in[i]);
+        i++;
+    }
+    return result;
+}
+
+//! merge two intervals
+// given two intervals [1,3] and [2,6] we have to merge them [1,6]
+// if they are not overlapping then we will return them as it is
+// if they are overlapping then we will merge them
+vector<vector<int>> merge(vector<vector<int>> &intervals)
+{
+    vector<vector<int>> result;
+
+    if (intervals.size() == 0)
+    {
+        return intervals;
+    }
+
+    // sort the intervals in the array
+    sort(intervals.begin(), intervals.end());
+
+    // storing the starting of interval in temp vector
+    vector<int> temp = intervals[0];
+
+    for (auto i : intervals)
+    {
+        // checking if the ending of privios interval is less then equal to
+        // its next intervals staring [1,2] [3 4]   i[0] poiting
+        if (i[0] <= temp[1])
+        {
+            temp[1] = max(i[1], temp[1]);
+        }
+        else
+        {
+            result.push_back(temp);
+            temp = i;
+        }
+    }
+    result.push_back(temp);
+    return result;
+}
+
+//! 435. Non-overlapping Intervals same as n meetings in one room
+//  works by sorting the intervals by their end time
+//  if we can to use compariter function without static keyword then we have to
+//  declare it outside of class if we have to use it inside we have to use static
+//  keyword before the function name our we can use inline compareter function
+//  tha dont not need to write an function we can directly declare it inside the
+//  the main function iteself
+//!  bool compare(const vector<int>& a, const vector<int>& b)
+//  {
+//       return a[1] < b[1];
+//  }
+
+class Solution
+{
+public:
+    //! use static keyword for using the comparitor function inside the class
+    static bool compare(const vector<int> &a, const vector<int> &b)
+    {
+        return a[1] < b[1];
+    }
+
+    int eraseOverlapIntervals(vector<vector<int>> &intervals)
+    {
+
+        if (intervals.empty())
+            return 0;
+
+        // Sort intervals based on their end times
+        sort(intervals.begin(), intervals.end(), compare);
+
+        int count = 0;                  // Count of intervals to remove
+        int prev_end = intervals[0][1]; // End time of the first interval
+
+        for (int i = 1; i < intervals.size(); i++)
+        {
+            if (intervals[i][0] < prev_end)
+            {
+                // Overlapping interval, increment the count
+                count++;
+            }
+            else
+            {
+                // Update prev_end to the current interval's end time
+                prev_end = intervals[i][1];
+            }
+        }
+
+        return count;
+    }
+};
 
 int main()
 {
@@ -486,7 +624,7 @@ int main()
     // int n = jobs.size();
     // vector<int> result = jobSequencing(jobs, n);
     // cout << "Max Jobs: " << result[0] << ", Max Profit: " << result[1] << endl;
-    
+
     //! candy
     // vector<int> ratings = {1, 0, 2};
     // cout << candy(ratings) << endl; // 5
@@ -495,6 +633,29 @@ int main()
     // vector<int> bt = {1, 2, 3, 4, 5};
     // cout << solve(bt) << endl; // 3
 
+    //! insert interveals
+    // vector<vector<int>> in = {{1, 3}, {6, 9}};
+    // vector<int> newinterval = {2, 5};
+    // vector<vector<int>> result = insert(in, newinterval);
+    // for (auto i : result)
+    // {
+    //     cout << i[0] << " " << i[1] << endl;
+    // }
+
+    //! merge two intervals
+    // vector<vector<int>> intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+    // vector<vector<int>> result = merge(intervals);
+    // for (auto i : result)
+    // {
+    //     cout << i[0] << " " << i[1] << endl;
+    // }
+
+    //! 435. Non-overlapping Intervals
+    // vector<vector<int>> intervals = {{1, 2}, {2, 3}, {3, 4}, {1, 3}};
+    // Solution s;
+    // cout << s.eraseOverlapIntervals(intervals) << endl; // 1
+
+    
 
     return 0;
 }
