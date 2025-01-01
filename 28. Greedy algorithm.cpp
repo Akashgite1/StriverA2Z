@@ -539,7 +539,8 @@ public:
         // Sort intervals based on their end times
         sort(intervals.begin(), intervals.end(), compare);
 
-        int count = 0;                  // Count of intervals to remove
+        int count = 0;  
+        //
         int prev_end = intervals[0][1]; // End time of the first interval
 
         for (int i = 1; i < intervals.size(); i++)
