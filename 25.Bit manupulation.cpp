@@ -821,7 +821,6 @@ int main()
     //     cout << ans[i] << " ";
     // }
 
-
     //! prime factors of the number
     // int n = 12;
     // primeFactors(n);

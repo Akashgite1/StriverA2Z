@@ -108,7 +108,15 @@ bool rotateString(string A, string B)
 
 }
 
-
+// making the strings to sub strings using inbuild function
+void print(){
+    string s = "akash";
+    for(int i = 0; i < s.size(); i++){
+        for(int j = 1; j <= s.size() - i; j++){
+            cout<<s.substr(i, j)<<endl;
+        }
+    }
+}
 
 
 int main()
@@ -155,8 +163,6 @@ int main()
     // string A = "abcde", B = "cdeab"; // ans is true
     // cout << rotateString(A, B);
     
-
-
 
     return 0;
 }

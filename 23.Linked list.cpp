@@ -405,7 +405,6 @@ int main()
     //! move temp to next data type
     //     temp = temp->next;
     //  }
-
     //  cout<<lenghtofLL(head);
     //  cout<<checkifpresent(head,3);
 
@@ -460,10 +459,10 @@ int main()
     // traverse(head);
 
     //! reverse the linked list
-    vector<int> arr = {2, 3, 4, 5};
-    node *head = convertArr2LL(arr);
-    head = reverse_ll(head);
-    traverse(head);
+    // vector<int> arr = {2, 3, 4, 5};
+    // node *head = convertArr2LL(arr);
+    // head = reverse_ll(head);
+    // traverse(head);
 
-
+    return 0;
 }

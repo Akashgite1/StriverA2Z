@@ -2,10 +2,11 @@
 
 using namespace std;
 
-// conditional statements
-// if
-// else
-// else if
+// conditional statements in c++ used for defing the condition in the code
+// like if the 1 is smaller then 2 
+// if -- for sigle condition
+// else if condition does not meet the else execute
+// else if -- for multiple condition
 
 //! example of if statem
 // if the n == 10 then print "n is 10"
@@ -136,25 +137,24 @@ int main()
     */
 
     // for this quation we use nested if else statements
-
-    int age;
-    cin >> age;
-    if (age < 18)
-    {
-        cout << "not eligible for the job";
-    }
-    else if (age <= 57)
-    {
-        cout << "eligible for the job";
-        if (age <= 57)
-        {
-            cout << "retirment soon";
-        }
-    }
-    else
-    {
-        cout << "retirment time ";
-    }
+    // int age;
+    // cin >> age;
+    // if (age < 18)
+    // {
+    //     cout << "not eligible for the job";
+    // }
+    // else if (age <= 57)
+    // {
+    //     cout << "eligible for the job";
+    //     if (age <= 57)
+    //     {
+    //         cout << "retirment soon";
+    //     }
+    // }
+    // else
+    // {
+    //     cout << "retirment time ";
+    // }
 
     return 0;
 }
