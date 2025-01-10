@@ -4,12 +4,11 @@
 using namespace std;
 
 //! Heaps also know as (priority queues) are a type of binary tree that satisfies the heap property. The heap property states that a parent node must be greater than or equal to its child node.
-//~ heaps problems mostly based on sorting where we use the heap sort 
-//~ heap is a complete binary tree there two types of heap max heap and min heap 
+//~ heaps problems mostly based on sorting where we use the heap sort
+//~ heap is a complete binary tree there two types of heap max heap and min heap
 //~ max heap the root node is the largest element in the tree
 //~ min heap the root node is the smallest element in the tree
-//~ hepify is the process of converting the normal array into the heap 
-
+//~ hepify is the process of converting the normal array into the heap
 
 // heap implementation using arrays time complexity O(logn) for insertion and deletion
 //! implementing the max heap using arrays
@@ -314,7 +313,7 @@ int kth_smallest_element(vector<int> arr, int k)
     }
 
     return max_heap.top(); // return the kth smallest element
-} // tc O(nlogk) sc O(k) 
+} // tc O(nlogk) sc O(k)
 
 // we can push all the element in queue and then pop the top element k times
 // then also we get the kth largest element
@@ -381,47 +380,152 @@ vector<int> K_Sorted_array(vector<int> arr, int k)
 //! if you have given the k sorted array in the 2d array
 // making the custom data and comparator function for the priority queue
 // declaring the struct for the getting the element value and its row and colum value
-struct Element
-{
-    int value;
-    int row;
-    int col;
+// struct Element
+// {
+//     int value;
+//     int row;
+//     int col;
+//     bool operator>(const Element &other) const
+//     {
+//         return value > other.value;
+//     }
+// };
+// vector<int> mergeKArrays(vector<vector<int>> arr, int K)
+// {
+//     priority_queue<Element, vector<Element>, greater<Element>> minHeap;
+//     vector<int> result;
+//     // Push the first element of each subarray into the min-heap
+//     for (int i = 0; i < arr.size(); i++)
+//     {
+//         minHeap.push({arr[i][0], i, 0});
+//     }
+//     while (!minHeap.empty())
+//     {
+//         // Pop the minimum element
+//         Element minElem = minHeap.top();
+//         minHeap.pop();
+//         // Add the popped element to the result
+//         result.push_back(minElem.value);
+//         // If the current subarray has more elements, push the next element
+//         if (minElem.col + 1 < arr[minElem.row].size())
+//         {
+//             minHeap.push({arr[minElem.row][minElem.col + 1], minElem.row, minElem.col + 1});
+//         }
+//     }
+//     return result;
+// }
 
-    bool operator>(const Element &other) const
-    {
-        return value > other.value;
-    }
+//! merge k sorted arrays linked list
+// given a vector of linked list we have to merge all the linked list into one linked list
+// ex arr = {{1,3,5,7},{2,4,6,8},{0,9,10,11}}
+// output = {0,1,2,3,4,5,6,7,8,9,10,11}
+// we can use the priority queue for the merging the linked list
+// defining the linklist
+struct ListNode
+{
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-vector<int> mergeKArrays(vector<vector<int>> arr, int K)
+// function for merging the linked list using the priority queue
+ListNode *mergeKLists(vector<ListNode *> &lists)
 {
-    priority_queue<Element, vector<Element>, greater<Element>> minHeap;
-    vector<int> result;
 
-    // Push the first element of each subarray into the min-heap
-    for (int i = 0; i < arr.size(); i++)
+    // Declare the priority queue (min-heap)
+    priority_queue<pair<int, ListNode *>, vector<pair<int, ListNode *>>,
+                   greater<pair<int, ListNode *>>>
+        pq;
+
+    // Push the head of each non-empty linked list into the priority queue
+    for (auto it : lists)
     {
-        minHeap.push({arr[i][0], i, 0});
+        if (it)
+        { // Ensure the list is not empty
+            pq.push({it->val, it});
+        }
     }
 
-    while (!minHeap.empty())
+    // Create a dummy node to simplify result list construction
+    ListNode *dummy = new ListNode(-1);
+    ListNode *temp = dummy; // Pointer for constructing the new list
+
+    // Process nodes in the priority queue
+    while (!pq.empty())
     {
-        // Pop the minimum element
-        Element minElem = minHeap.top();
-        minHeap.pop();
+        // Get the smallest node
+        auto it = pq.top();
+        pq.pop();
 
-        // Add the popped element to the result
-        result.push_back(minElem.value);
+        // Add the smallest node to the new list
+        temp->next = it.second;
+        temp = temp->next;
 
-        // If the current subarray has more elements, push the next element
-        if (minElem.col + 1 < arr[minElem.row].size())
+        // If there's a next node in the current list, push it into the
+        // queue
+        if (it.second->next)
         {
-            minHeap.push({arr[minElem.row][minElem.col + 1], minElem.row, minElem.col + 1});
+            pq.push({it.second->next->val, it.second->next});
         }
+    }
+
+    // Return the head of the merged list
+    return dummy->next;
+}
+
+//! Replace elements by its rank in the array
+// Define a pair for heap element with value and index
+using Element = pair<int, int>;
+vector<int> replaceWithRank(vector<int> &arr, int N)
+{
+
+    vector<Element> indexed_arr;
+
+    // Step 1: Create a vector of pairs (value, original index)
+    for (int i = 0; i < N; ++i)
+    {
+        indexed_arr.push_back({arr[i], i});
+    }
+
+    // Step 2: Create a min-heap to store elements in ascending order based on value
+    priority_queue<Element, vector<Element>, greater<Element>> min_heap;
+
+    // Push all elements into the min-heap
+    for (auto &elem : indexed_arr)
+    {
+        min_heap.push(elem);
+    }
+
+    // Step 3: Create a vector to store the ranks and a map to track the first occurrence of each value
+    vector<int> result(N);
+    unordered_map<int, int> rank_map;
+    int rank = 1;
+
+    // Step 4: Assign ranks based on sorted order
+    while (!min_heap.empty())
+    {
+        Element current = min_heap.top();
+        min_heap.pop();
+
+        int value = current.first;
+        int index = current.second;
+
+        // If this value hasn't been assigned a rank before, assign it the current rank
+        if (rank_map.find(value) == rank_map.end())
+        {
+            rank_map[value] = rank++;
+        }
+
+        // Assign the rank to the result at the original index
+        result[index] = rank_map[value];
     }
 
     return result;
 }
+
+//! 621. Task Scheduler
 
 
 
@@ -531,14 +635,13 @@ int main()
     // }
 
     //! if you have given the k sorted array in the 2d array
-    vector<vector<int>> arr = {{1,2,3,4},{2,2,3,4},{5,5,6,6},{7,8,9,9}};
-    int k = 4;
-    vector<int> ans = mergeKArrays(arr, k);
-    for (int i = 0; i < ans.size(); i++)
-    {
-        cout << ans[i] << " ";
-    }
-    
+    // vector<vector<int>> arr = {{1, 2, 3, 4}, {2, 2, 3, 4}, {5, 5, 6, 6}, {7, 8, 9, 9}};
+    // int k = 4;
+    // vector<int> ans = mergeKArrays(arr, k);
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     cout << ans[i] << " ";
+    // }
 
     return 0;
 }
