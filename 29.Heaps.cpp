@@ -526,6 +526,64 @@ vector<int> replaceWithRank(vector<int> &arr, int N)
 }
 
 //! 621. Task Scheduler
+int leastInterval(vector<char> &tasks, int n)
+{
+    // heaps + greedy solution
+    vector<int> mp(26, 0);
+
+    // Count the frequency of each task
+    for (char c : tasks)
+    {
+        mp[c - 'A']++;
+    }
+
+    int time = 0;
+    // create the max heap
+    priority_queue<int> pq;
+
+    // pushing all element freq in the max heap for sorting in descending order
+    for (int i = 0; i < 26; i++)
+    {
+        if (mp[i] > 0)
+        {
+            pq.push(mp[i]);
+        }
+    }
+
+    while (!pq.empty())
+    {
+        vector<int> temp;
+        for (int i = 1; i <= n + 1; i++)
+        {
+            if (!pq.empty())
+            {
+                int freq = pq.top();
+                pq.pop();
+                freq--;
+                temp.push_back(freq);
+            }
+        }
+        for (int i = 0; i < temp.size(); i++)
+        {
+            if (temp[i] > 0)
+            {
+                pq.push(temp[i]);
+            }
+        }
+        if (pq.empty()) // all processes finished
+            time += temp.size();
+        else
+            time += n + 1; // we finished p+1 tasks above in the loop
+    }
+    return time; 
+}
+
+
+//! 846 Hand of Straights
+bool isNStraightHand(vector<int>& hand, int groupSize) {
+       
+}
+
 
 
 

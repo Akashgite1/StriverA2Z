@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #include <iostream>
 
-
 using namespace std;
 
 //! bit manipulation
@@ -279,7 +278,7 @@ int countSetBitsOptimal(int n)
     // SC = O(1)
 }
 
-// check if the number is odd or even
+//! check if the number is odd or even
 bool isOdd(int n)
 {
     return (n & 1);
@@ -301,7 +300,7 @@ bool isOdd(int n)
     // 0  0  0 --> 0 output is 0 the number is even
 }
 
-// check if the number is power of 2
+//! check if the number is power of 2
 bool isPowerOf2(int n)
 {
 
@@ -348,7 +347,7 @@ bool isPowerOf2(int n)
     // 1000 so the number is not power of 2
 }
 
-// brute force approach to find the power of 2
+//! brute force approach to find the power of 2
 int powerOf2(int n)
 {
     int count = 0;
@@ -371,7 +370,7 @@ int powerOf2(int n)
     // 2/2 = 1 count = 3
 }
 
-// divid two integers without using division and multiplication operator
+//! divid two integers without using division and multiplication operator
 int divide(int divisor, int dividend)
 {
     if (dividend == divisor)
@@ -448,7 +447,7 @@ int divide(int divisor, int dividend)
 // 1/2 = 0 remender = 1 count = 3
 // therefore the output is 3
 
-// mininum bit flip to convert A to B
+//! mininum bit flip to convert A to B
 int minBitFlip(int a, int b)
 {
     int count = 0;
@@ -460,7 +459,6 @@ int minBitFlip(int a, int b)
             count++;
     }
     return count;
-    
 }
 
 int HowManyBitsToFlip(int a, int b)
@@ -480,7 +478,7 @@ int HowManyBitsToFlip(int a, int b)
     // a ^ b = 1010 ^ 0111 = 1101
 }
 
-// single number in the arra
+//! single number in the arra
 int singleNumber(vector<int> &nums)
 {
     int ans = 0;
@@ -499,7 +497,7 @@ int singleNumber(vector<int> &nums)
     // tharefore the output is 3
 }
 
-// subset using bit manipulation
+//! subset using bit manipulation
 vector<vector<int>> subset(vector<int> &nums)
 {
 
@@ -512,10 +510,10 @@ vector<vector<int>> subset(vector<int> &nums)
 
         for (int j = 0; j < n; j++)
         {
-            // if the ith bit is set 
-            // then we are storing the jth number element from the array 
+            // if the ith bit is set
+            // then we are storing the jth number element from the array
 
-            if (i & (1 << j)) // check the ith bit is set or not that means if the result is any integer except 0 we are storing the jth element from the array in the vector as an subset  
+            if (i & (1 << j)) // check the ith bit is set or not that means if the result is any integer except 0 we are storing the jth element from the array in the vector as an subset
             {
                 v.push_back(nums[j]);
             }
@@ -535,13 +533,12 @@ vector<vector<int>> subset(vector<int> &nums)
     // 3 2 1 0
     // 0 0 0 0  []    (0 & (1 << j)) 0 & 1 = 0  0 & 2 = 0  0 & 4 = 0
     // 0 0 0 1  [1]   (1 & (1 << j)) 1 & 1 = 1
-    // 0 0 1 0  [2]   (2 & (1 << j)) 2 & 1 = 0 
+    // 0 0 1 0  [2]   (2 & (1 << j)) 2 & 1 = 0
     // 0 0 1 1  [1, 2] (3 & (1 << j)) 3 & 1 = 1  3 & 2 = 2
     // 0 1 0 0  [3]  (4 & (1 << j)) 4 & 1 = 0
-    // 0 1 0 1  [1, 3] (5 & (1 << j)) 5 & 1 = 1  
+    // 0 1 0 1  [1, 3] (5 & (1 << j)) 5 & 1 = 1
     // 0 1 1 0  [2, 3] (6 & (1 << j)) 6 & 1 = 0  6 & 2 = 2
     // 0 1 1 1  [1, 2, 3] (7 & (1 << j)) 7 & 1 = 1  7 & 2 = 2  7 & 4 = 4
-    
 
     // subset are stored in the vector vector like
     // vector = {[],
@@ -558,8 +555,9 @@ vector<vector<int>> subset(vector<int> &nums)
     // SC = O(n * 2^n)
 }
 
-// single number in the array single number III
-vector<int> singleNumberIII(vector<int> &nums){
+//! single number in the array single number III
+vector<int> singleNumberIII(vector<int> &nums)
+{
     // example nums = {1, 2, 1, 3, 2, 5}
     int n = nums.size();
     int xorr = 0;
@@ -568,7 +566,7 @@ vector<int> singleNumberIII(vector<int> &nums){
         xorr = xorr ^ nums[i];
     }
 
-    long int rightmost = xorr & -(long long )xorr;
+    long int rightmost = xorr & -(long long)xorr;
 
     int a = 0, b = 0;
     for (int i = 0; i < n; i++)
@@ -587,19 +585,17 @@ vector<int> singleNumberIII(vector<int> &nums){
     // SC = O(1)
 }
 
-
 //!------> Advance Maths Questions using Bit Manipulation  ------------------->
 // print the prime factors of the number prime factors means the number that is divisible by the number
 bool prime(int n)
 {
-    for (int i = 2;  i <= sqrt(n); i++)
+    for (int i = 2; i <= sqrt(n); i++)
     {
         if (n % i == 0)
             return false;
     }
     return true;
 }
-
 
 void primeFactors(int n)
 {
@@ -622,7 +618,7 @@ void primeFactors(int n)
     }
 }
 
-// print all devisors of the number
+//! print all devisors of the number
 void allDevisors(int n)
 {
     for (int i = 1; i * i <= n; i++)
@@ -638,22 +634,27 @@ void allDevisors(int n)
     }
 }
 
-//  Sieve of Eratosthenes algorithm for prime numbers 
-void sieve_Eratosthenes(int N) {
-    
-    vector<int> prime(N+1, 1);  // Create a boolean array and initialize all entries as true.
-    prime[0] = prime[1] = 0;    // 0 and 1 are not prime numbers.
+//!  Sieve of Eratosthenes algorithm for prime numbers
+void sieve_Eratosthenes(int N)
+{
 
-    for (int i = 2; i * i <= N; i++) {
-        if (prime[i] == 1) {    // If i is prime
-            for (int j = i * i; j <= N; j += i) {
-                prime[j] = 0;   // Mark all multiples of i as not prime
+    vector<int> prime(N + 1, 1); // Create a boolean array and initialize all entries as true.
+    prime[0] = prime[1] = 0;     // 0 and 1 are not prime numbers.
+
+    for (int i = 2; i * i <= N; i++)
+    {
+        if (prime[i] == 1)
+        { // If i is prime
+            for (int j = i * i; j <= N; j += i)
+            {
+                prime[j] = 0; // Mark all multiples of i as not prime
             }
         }
     }
 
     // Output all prime numbers
-    for (int i = 2; i <= N; i++) {
+    for (int i = 2; i <= N; i++)
+    {
         if (prime[i] == 1)
             cout << i << " ";
     }
@@ -672,9 +673,9 @@ void sieve_Eratosthenes(int N) {
 // 4^10
 // now the power is even then multiply the number with itself and reduce the power by 2
 // (4*4)^10/4   10/4 = 2
-// 16^2 
+// 16^2
 // now the power is even then multiply the number with itself and reduce the power by 2
-// (16*16)^2/2 
+// (16*16)^2/2
 // 256^1
 // now the power is odd then multiply the ans with the number
 // (256*256)^1/2  1/2 = 0
@@ -700,40 +701,63 @@ int power(int x, int n)
             x = x * x;
             n = n / 2;
         }
-       
     }
-    if(m < 0) ans = 1/ans;
+    if (m < 0)
+        ans = 1 / ans;
     return ans;
 }
 
-// power of (X , N) using bit manipulation for nagative power
+//! power of (X , N) using bit manipulation for nagative power
 double power(double x, int n)
 {
-     double ans = 1;
-        long long m = n;  // Use long long to handle negative n properly
+    double ans = 1;
+    long long m = n; // Use long long to handle negative n properly
 
-        if (m < 0) {
-            m = -m;  // Make the exponent positive for now
+    if (m < 0)
+    {
+        m = -m; // Make the exponent positive for now
+    }
+
+    while (m > 0)
+    {
+        if (m % 2 == 1)
+        {
+            ans = ans * x;
+            m = m - 1;
         }
-
-        while (m > 0) {
-            if (m % 2 == 1) {
-                ans = ans * x;
-                m = m - 1;
-            } else {
-                x = x * x;
-                m = m / 2;
-            }
+        else
+        {
+            x = x * x;
+            m = m / 2;
         }
+    }
 
-        if (n < 0) {
-            ans = 1.0 / ans;  // Handle negative exponent
-        }
+    if (n < 0)
+    {
+        ans = 1.0 / ans; // Handle negative exponent
+    }
 
-        return ans;
+    return ans;
 }
 
 //! Prime Factorization using Sieve
+// prime number are those number that are divisible by 1 and itself
+// for example 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
+// factorization is process of breaking down a number into product of its smaller components
+// called factors when we multiplied this then we get the original number
+// for example 12 = 2 * 2 * 3 = 12
+// for polynomials x^2 + 5x + 6 =  (x - 2) * (x - 3) = 0
+
+//~ Steps for Prime Factorization:
+// Divide the number by the smallest prime number (like 2, 3, 5, etc.) that can divide it.
+// Continue dividing the quotient by prime numbers until the quotient becomes 1.
+// The prime factors are the numbers used in the division.
+//~ For 6060:
+// Start with the smallest prime, 22: 60÷2=3060÷2=30
+// 30÷2=1530÷2=15
+// 15÷3=515÷3=5 (3 is the next smallest prime that divides 15)
+// 5÷5=15÷5=1
+
 
 
 int main()
@@ -754,7 +778,7 @@ int main()
     //! check kth bit is set or not
     // int n = 5;
     // int k = 2;
-    // cout << checkKthBit(n, k) << endl; 
+    // cout << checkKthBit(n, k) << endl;
     // cout << checkKthBitRightShift(n, k) << endl;
 
     //! set kth bit
@@ -831,7 +855,7 @@ int main()
 
     //! sieve of Eratosthenes algorithm for prime numbers
     // int N = 10;
-    // sieve_Eratosthenes(N); 
+    // sieve_Eratosthenes(N);
 
     //! power of (X , N) using bit manipulation
     // int x = 2;
@@ -842,7 +866,6 @@ int main()
     // double x = 2;
     // int n = -3;
     // cout << power(x, n) << endl; // 0.125
-
 
     return 0;
 }
