@@ -575,15 +575,108 @@ int leastInterval(vector<char> &tasks, int n)
         else
             time += n + 1; // we finished p+1 tasks above in the loop
     }
-    return time; 
+    return time;
 }
-
 
 //! 846 Hand of Straights
-bool isNStraightHand(vector<int>& hand, int groupSize) {
-       
+bool isNStraightHand(vector<int> &hand, int groupSize)
+{
+    int n = hand.size();
+
+    // If the total number of cards is not divisible by groupSize, return
+    // false
+    if (n % groupSize != 0)
+        return false;
+
+    // Count the frequency of each card
+    unordered_map<int, int> freq;
+    for (int card : hand)
+        freq[card]++;
+
+    // Min-heap to process cards in ascending order
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    for (auto &[card, count] : freq)
+        minHeap.push(card);
+
+    // Process cards in the heap
+    while (!minHeap.empty())
+    {
+        int start = minHeap.top(); // Start of the group
+
+        // Try to form a group of size groupSize starting from 'start'
+        for (int i = 0; i < groupSize; i++)
+        {
+            int card = start + i;
+
+            // If the card is not available in the frequency map, return
+            // false
+            if (freq[card] <= 0)
+                return false;
+
+            // Decrement the frequency of the card
+            freq[card]--;
+
+            // If the frequency of the card becomes 0 and it's the smallest
+            // card, remove it from the heap
+            if (freq[card] == 0 && card == minHeap.top())
+                minHeap.pop();
+        }
+    }
+
+    return true;
 }
 
+//! 355 desing twitter using heap 
+class Twitter{
+    map<int, set<int>> followers;
+    map<int, vector<pair<int, int>>> tweets;
+    int time = 0;
+
+public:
+    Twitter(){}
+
+    void postTweet(int userId, int tweetId)
+    {
+        tweets[userId].push_back({time++, tweetId});
+
+    }
+
+    vector<int> getNewsFeed(int userId)
+    {
+        priority_queue<pair<int, int>> pq;
+        for (auto &tweet : tweets[userId])
+        {
+            pq.push(tweet);
+        }
+
+        for (int follower : followers[userId])
+        {
+            for (auto &tweet : tweets[follower])
+            {
+                pq.push(tweet);
+            }
+        }
+
+        vector<int> result;
+        while (!pq.empty() && result.size() < 10)
+        {
+            result.push_back(pq.top().second);
+            pq.pop();
+        }
+
+        return result;
+    }
+
+    void follow(int followerId, int followeeId)
+    {
+        followers[followerId].insert(followeeId);
+    }
+
+    void unfollow(int followerId, int followeeId)
+    {
+        followers[followerId].erase(followeeId);
+    }
+};
 
 
 
@@ -700,6 +793,33 @@ int main()
     // {
     //     cout << ans[i] << " ";
     // }
+
+    //! desing twitter using heap
+    // Twitter obj;
+    // obj.postTweet(1, 5);
+    // vector<int> param_2 = obj.getNewsFeed(1);
+    // obj.follow(1, 2);
+    // obj.postTweet(2, 6);
+    // vector<int> param_3 = obj.getNewsFeed(1);
+    // obj.unfollow(1, 2);
+    // vector<int> param_4 = obj.getNewsFeed(1);
+    // for (int i = 0; i < param_2.size(); i++)
+    // {
+    //     cout << param_2[i] << " ";
+    // }
+    // cout << endl;
+    // for (int i = 0; i < param_3.size(); i++)
+    // {
+    //     cout << param_3[i] << " ";
+    // }
+    // cout << endl;
+    // for (int i = 0; i < param_4.size(); i++)
+    // {
+    //     cout << param_4[i] << " ";
+    // }
+    // cout << endl;
+    
+
 
     return 0;
 }

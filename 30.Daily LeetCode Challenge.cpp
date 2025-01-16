@@ -4,8 +4,7 @@
 using namespace std;
 
 //~ 2657 find teh prefix common Array of Two Arrays (day-111)
-vector<int> findThePrefixCommonArray(vector<int> &A, vector<int> &B)
-{
+vector<int> findThePrefixCommonArray(vector<int> &A, vector<int> &B){
     // brute force
     int n = A.size();
 
@@ -94,6 +93,7 @@ int setbit(int n)
     // SC = O(1)
 }
 
+//!  2429. Minimize XOR
 int minimizeXor(int num1, int num2)
 {
 
@@ -147,7 +147,8 @@ int minimizeXor(int num1, int num2)
     return result;
 }
 
-//! 
+//! 2425. Bitwise XOR of All Pairings
+
 
 int main()
 {
