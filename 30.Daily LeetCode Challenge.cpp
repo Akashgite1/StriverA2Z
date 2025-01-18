@@ -4,7 +4,8 @@
 using namespace std;
 
 //~ 2657 find teh prefix common Array of Two Arrays (day-111)
-vector<int> findThePrefixCommonArray(vector<int> &A, vector<int> &B){
+vector<int> findThePrefixCommonArray(vector<int> &A, vector<int> &B)
+{
     // brute force
     int n = A.size();
 
@@ -131,9 +132,9 @@ int minimizeXor(int num1, int num2)
         // Remove set bits from the least significant positions
         for (int i = 0; i < 32; i++)
         {
-            // right sheft the 1 to ith position and get its and 
-            // if the ith position value is 1 then the result is 1 so if 
-            // its result is become we can say that its ith position have 1 
+            // right sheft the 1 to ith position and get its and
+            // if the ith position value is 1 then the result is 1 so if
+            // its result is become we can say that its ith position have 1
             if (((result >> i) & 1) == 1)
             {
                 result &= ~(1 << i); // Clear the i-th bit
@@ -148,7 +149,68 @@ int minimizeXor(int num1, int num2)
 }
 
 //! 2425. Bitwise XOR of All Pairings
+int xorAllNums(vector<int> &nums1, vector<int> &nums2)
+{
+    // int xor1 = 0, xor2 = 0;
 
+    // // XOR all elements in nums1
+    // for (int num : nums1)
+    // {
+    //     xor1 ^= num;
+    // }
+
+    // // XOR all elements in nums2
+    // for (int num : nums2)
+    // {
+    //     xor2 ^= num;
+    // }
+
+    // // Combine based on odd sizes
+    // int result = 0;
+    // if (nums2.size() % 2 != 0)
+    // {
+    //     result ^= xor1; // nums1 elements contribute if nums2 has odd size
+    // }
+    // if (nums1.size() % 2 != 0)
+    // {
+    //     result ^= xor2; // nums2 elements contribute if nums1 has odd size
+    // }
+
+    // return result;
+    //~ only the odd number of time comes elements matter since the even
+    // number of time comes elements will cancel each other
+    // we check which array has the odd number of elements and then
+    // we take the xor of that array
+
+    int m = nums1.size();
+    int n = nums2.size();
+
+    int XOR = 0;
+
+    if (m % 2 != 0)
+    { // m is of odd length
+        for (int &num : nums2)
+        {
+            XOR ^= num;
+        }
+    }
+
+    if (n % 2 != 0)
+    { // n is of odd length
+        for (int &num : nums1)
+        {
+            XOR ^= num;
+        }
+    }
+
+    return XOR;
+}
+
+//! 22683. Neighboring Bitwise XOR
+bool doesValidArrayExist(vector<int> &derived)
+{
+    
+}
 
 int main()
 {
@@ -163,10 +225,14 @@ int main()
     // cout << endl;
 
     //! 2429. Minimize XOR
-    int num1 = 10;
-    int num2 = 20;
-    cout << minimizeXor(num1, num2) << endl;
+    // int num1 = 10;
+    // int num2 = 20;
+    // cout << minimizeXor(num1, num2) << endl;
 
+    //! 2425. Bitwise XOR of All Pairings
+    vector<int> nums1 = {1, 2, 3};
+    vector<int> nums2 = {2, 3, 4};
+    cout << xorAllNums(nums1, nums2) << endl;
 
     return 0;
 }

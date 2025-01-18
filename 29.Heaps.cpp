@@ -626,19 +626,19 @@ bool isNStraightHand(vector<int> &hand, int groupSize)
     return true;
 }
 
-//! 355 desing twitter using heap 
-class Twitter{
+//! 355 desing twitter using heap
+class Twitter
+{
     map<int, set<int>> followers;
     map<int, vector<pair<int, int>>> tweets;
     int time = 0;
 
 public:
-    Twitter(){}
+    Twitter() {}
 
     void postTweet(int userId, int tweetId)
     {
         tweets[userId].push_back({time++, tweetId});
-
     }
 
     vector<int> getNewsFeed(int userId)
@@ -678,7 +678,215 @@ public:
     }
 };
 
+//! 703. Kth Largest Element in a Stream
+class KthLargest
+{
+public:
+    // intilizng the queue and k
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    int k;
 
+    KthLargest(int k, vector<int> &nums)
+    {
+        // declaring the k as same k which provide us in kthlargest function
+        this->k = k;
+        for (int num : nums)
+        {
+            minHeap.push(num); // Add each number to the heap
+            if (minHeap.size() > k)
+            {
+                minHeap.pop(); // Ensure the heap size does not exceed k
+            }
+        }
+    }
+
+    int add(int val)
+    {
+        minHeap.push(val); // Add the new value to the heap
+        if (minHeap.size() > k)
+        {
+            minHeap.pop(); // Remove the smallest element if heap size exceeds k
+        }
+        return minHeap.top(); // The root is the kth largest element
+    }
+};
+
+//! road cutting problem
+
+//! Maximum Sum Combinations
+vector<int> Solution(vector<int> &A, vector<int> &B, int C)
+{
+    int N = A.size();
+    // use for storing the sum elemenets tha pair make sum combination
+    // vector<pair<int,int>> Element;
+    // printing the elements as well that make the sum combination
+    vector<tuple<int, int, int>> Element;
+    // Sort both arrays in descending order
+
+    std::sort(A.begin(), A.end(), std::greater<int>());
+
+    std::sort(B.begin(), B.end(), std::greater<int>());
+
+    // Max-heap (using pair: sum, {indexA, indexB})
+
+    std::priority_queue<std::pair<int, std::pair<int, int>>> pq;
+
+    // Start with the largest pair (A[0], B[0])
+
+    pq.push({A[0] + B[0], {0, 0}});
+
+    std::vector<int> result;
+
+    // Set to track visited index pairs to avoid duplicates
+    set<pair<int, int>> visited;
+
+    visited.insert({0, 0});
+
+    while (!pq.empty() && result.size() < C)
+    {
+
+        auto top = pq.top();
+
+        pq.pop();
+
+        int sum = top.first;
+
+        int i = top.second.first;
+
+        int j = top.second.second;
+        // Element.push_back({A[i],B[j]});
+        Element.push_back({A[i], B[j], sum});
+        result.push_back(sum);
+
+        // Explore the next valid combinations:
+        if (i + 1 < N && visited.find({i + 1, j}) == visited.end())
+        {
+            pq.push({A[i + 1] + B[j], {i + 1, j}});
+
+            visited.insert({i + 1, j});
+        }
+
+        if (j + 1 < N && visited.find({i, j + 1}) == visited.end())
+        {
+            pq.push({A[i] + B[j + 1], {i, j + 1}});
+
+            visited.insert({i, j + 1});
+        }
+    }
+
+    // print the elments as well tha sum to the  sum combination form Array
+    // for(auto i:Element){
+    //     cout<<i.first<<"+"<<i.second<<endl;
+    // }
+
+    // print the tuple elements as well that make the sum combination
+    // get<0>(i) is the first element
+    // get<1>(i) is the second element
+    // get<2>(i) is the sum of the first and second element
+    int element_number = 1;
+    for (auto i : Element)
+    {
+        cout << "pair " << element_number << "[" << get<0>(i) << " + " << get<1>(i) << "]" << " = " << get<2>(i) << endl;
+        // cout<<get<0>(i)<<" + "<<get<1>(i)<<" = "<<get<2>(i)<<endl;
+        element_number++;
+    }
+    return result; // tc o(n log n + k log n) sc O(n^2)
+}
+
+//! 295. Find Median from Data Stream Hard
+class MedianFinder
+{
+    // declare the max heap
+    priority_queue<int> maxHeap;
+    // declare the min heap
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    // declare the variable for the size of the max heap
+    int size = 0;
+
+public:
+    MedianFinder()
+    {
+    }
+
+    void addNum(int num)
+    {
+        // pushing the elment in the max and min heap
+        if (maxHeap.empty() || num <= maxHeap.top())
+        {
+            maxHeap.push(num);
+        }
+        else
+        {
+            minHeap.push(num);
+        }
+
+        //~ balancing the size of the max heap and min heap
+        // if the size of the max heap is greater than the min heap then push the top element of the max heap to the min heap
+
+        if (maxHeap.size() > minHeap.size() + 1)
+        {
+            minHeap.push(maxHeap.top());
+            maxHeap.pop();
+        }
+        else if (minHeap.size() > maxHeap.size())
+        {
+            maxHeap.push(minHeap.top());
+            minHeap.pop();
+        }
+    }
+
+    double findMedian()
+    {
+        // even number of elements in the array
+        if (maxHeap.size() == minHeap.size())
+        {
+            return (maxHeap.top() + minHeap.top()) / 2.0;
+        }
+        else // odd number of elments int the array
+        {
+            return maxHeap.top();
+        }
+
+    } // tc O(logn) sc O(n)
+};
+
+//! 347. Top K Frequent Elements
+vector<int> topKFrequent(vector<int> &nums, int k)
+{
+    int n = nums.size();
+    map<int, int> freq;
+    // Count the frequency of each number
+    for (int num : nums)
+    {
+        freq[num]++;
+    }
+    // min heap to store the top k frequent elements
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap;
+
+    // push all the elements in the min heap
+    for (auto& it : freq)
+    {
+        // push the element in the min heap 
+        minHeap.push({it.second, it.first});
+
+        // if the heaps size exceed k then remove 
+        if (minHeap.size() > k)
+        {
+            minHeap.pop();
+        }
+    }
+    
+      // declare the vector for storing the result
+    vector<int> result;
+    // push the top k elements in the result vector
+    while (!minHeap.empty())
+    {
+        result.push_back(minHeap.top().second);
+        minHeap.pop();
+    }
+
+    return result;
+}
 
 int main()
 {
@@ -818,7 +1026,59 @@ int main()
     //     cout << param_4[i] << " ";
     // }
     // cout << endl;
-    
+
+    //! 703. Kth Largest Element in a Stream
+    // vector<int> nums = {4, 5, 8, 2};
+    // KthLargest kthLargest(3, nums);
+    // cout << kthLargest.add(3) << endl; // returns 4
+    // cout << kthLargest.add(5) << endl; // returns 5
+    // cout << kthLargest.add(10) << endl; // returns 5
+    // cout << kthLargest.add(9) << endl; // returns 8
+    // cout << kthLargest.add(4) << endl; // returns 8
+
+    //! 621. Task Scheduler
+    // vector<char> tasks = {'A', 'A', 'A', 'B', 'B', 'B'};
+    // int n = 2;
+    // cout << leastInterval(tasks, n) << endl; // 8
+
+    //! 846 Hand of Straights
+    // vector<int> hand = {1, 2, 3, 6, 2, 3, 4, 7, 8};
+    // int W = 3;
+    // cout << isNStraightHand(hand, W) << endl; // 1
+
+    //! Maximum Sum Combinations
+    // vector<int> A = {1, 4, 2, 3};
+    // vector<int> B = {2, 5, 1, 6};
+    // int C = 4;
+    // vector<int> ans = Solution(A, B, C);
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     cout << ans[i] << " ";
+    // }
+
+    //! 295. Find Median from Data Stream Hard
+    // MedianFinder obj;
+    // obj.addNum(1);
+    // obj.addNum(2);
+    // cout << obj.findMedian() << endl; // 1.5
+    // obj.addNum(3);
+    // cout << obj.findMedian() << endl; // 2
+    // obj.addNum(4);
+    // cout << obj.findMedian() << endl; // 2.5
+    // obj.addNum(5);
+    // cout << obj.findMedian() << endl; // 3
+    // obj.addNum(6);
+    // cout << obj.findMedian() << endl; // 3.5
+
+    //! 347. Top K Frequent Elements
+    vector<int> nums = {1, 1, 1, 2, 2, 3};
+    int k = 2;
+    vector<int> ans = topKFrequent(nums, k);
+    for (int i = 0; i < ans.size(); i++)
+    {
+        cout << ans[i] << " ";
+    }
+
 
 
     return 0;
