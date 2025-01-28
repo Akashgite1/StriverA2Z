@@ -3,6 +3,7 @@
 
 using namespace std;
 
+//^ Easy
 //~ 2657 find teh prefix common Array of Two Arrays (day-111)
 vector<int> findThePrefixCommonArray(vector<int> &A, vector<int> &B)
 {
@@ -80,6 +81,7 @@ vector<int> findThePrefixCommonArray(vector<int> &A, vector<int> &B)
     return result; // TC O(n) SC O(n)
 }
 
+//^ Medium
 //! 2429. Minimize XOR (day-112)
 int setbit(int n)
 {
@@ -94,6 +96,7 @@ int setbit(int n)
     // SC = O(1)
 }
 
+//^ Medium
 //!  2429. Minimize XOR
 int minimizeXor(int num1, int num2)
 {
@@ -148,6 +151,7 @@ int minimizeXor(int num1, int num2)
     return result;
 }
 
+//^ Medium
 //! 2425. Bitwise XOR of All Pairings
 int xorAllNums(vector<int> &nums1, vector<int> &nums2)
 {
@@ -206,10 +210,46 @@ int xorAllNums(vector<int> &nums1, vector<int> &nums2)
     return XOR;
 }
 
+//^ Medium
 //! 22683. Neighboring Bitwise XOR
 bool doesValidArrayExist(vector<int> &derived)
 {
-    
+}
+
+//^ Hard
+//! 1368 minimum cost to make at least one valid path in a grid
+int minCost(vector<vector<int>> &grid)
+{
+}
+
+//! 2948. Make Lexicographically Smallest Array by Swapping Elements
+
+
+long long gridGame(vector<vector<int>> &grid)
+{
+    long long firstRowRemainSum =
+        accumulate(begin(grid[0]), end(grid[0]), 0LL); // O(col)
+
+    long long secondRowRemainSum = 0;
+
+    long long minimizedRobot2Sum = LONG_LONG_MAX;
+
+    for (int Robot1Col = 0; Robot1Col < grid[0].size();
+         Robot1Col++)
+    { // O(col);
+        // Robot1 took this strategy
+        firstRowRemainSum -= grid[0][Robot1Col];
+
+        // Robot2 will try to do best after Robot1 has taken the above
+        // strategy
+        long long bestOfRobot2 = max(firstRowRemainSum, secondRowRemainSum);
+
+        minimizedRobot2Sum = min(minimizedRobot2Sum, bestOfRobot2);
+
+        secondRowRemainSum += grid[1][Robot1Col];
+    }
+
+    return minimizedRobot2Sum;
 }
 
 int main()
