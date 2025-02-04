@@ -323,7 +323,7 @@ int LevelNode(int i){
   
 }
 
-//! height of the binary tree 
+//! Height of the binary tree 
 // 104. Maximum Depth of Binary Tree
 //                        3
 //                     /   \
@@ -376,7 +376,7 @@ int height(struct Node *root)
     return -1;
 }
 
-//! diameter of the binary tree
+//! Diameter of the binary tree
 class Solution {
 public:
     int solve(Node* root, int& result) {
@@ -425,7 +425,296 @@ public:
     }
 };
 
+//! 103. Binary Tree Zigzag Level Order Traversal
+//                        3
+//                     /   \
+//                    9     20
+//                         /   \
+//                        15    7
+// zigzag level order traversal   [[3],[20,9],[15,7]]
+vector<vector<int>> zigzagLevelOrder(Node *root)
+{
+    if (!root) return {}; // Return empty if the tree is empty
 
+    vector<vector<int>> result; // Final result
+    queue<Node *> q;            // Queue for BFS
+    q.push(root);
+    bool leftToRight = true; // Direction flag
+
+    while (!q.empty()){
+        int size = q.size();
+        deque<int> level; // Use deque to handle zigzag order
+
+        for (int i = 0; i < size; i++){
+            Node *node = q.front();
+            q.pop();
+            
+            // direction is left to right
+            if (leftToRight){
+                level.push_back(node->data); // Add to the end
+            }
+            else{
+                level.push_front(node->data); // Add to the front for reverse order
+            }
+
+            if (node->left)
+                q.push(node->left);
+            if (node->right)
+                q.push(node->right);
+        }
+
+        result.push_back(vector<int>(level.begin(), level.end())); // Convert deque to vector
+        leftToRight = !leftToRight;                                // Toggle direction
+    }
+
+    return result;
+}
+
+//! 124. Binary Tree Maximum Path Sum
+class maxPathSumClass {
+public:
+    int maxpath(Node* node, int& maxi){
+        if(node == NULL) return 0;
+        
+        // we provide the 2 parameters inside the max one is 0 and another one is
+        // recursion of maxpath is the recursion of maxpath provide the negative value
+        // we will return 0 insted of taking that negative value 
+        // since the negative value never provide as the max sum
+        int left = max(0 , maxpath(node->left,maxi));
+
+        int right = max(0, maxpath(node->right,maxi));
+
+        maxi = max(maxi, left + right + node->data);
+
+        return max(left,right) + node->data;
+    }
+    // main function 
+    int maxPathSum(Node* root) {
+        int maxi = INT_MIN;
+
+        maxpath(root, maxi);
+        return maxi;
+    } // TC O(n) SC O(1)
+};
+
+//! check if two binary tree are similar or not 
+//~ 100. Same Tree
+bool isSameTree(Node* p, Node* q) {
+    if(p == NULL && q == NULL) return true;
+    if(p == NULL || q == NULL) return false;
+    if(p->data != q->data) return false;
+    return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+}
+
+//! boundary traversal of the binary tree 
+//~ 545. Boundary of Binary Tree
+class boundary{
+    public:
+    void leftBoundary(Node* root, vector<int>& ans){
+        // if the root is null then return 
+        if(!root) return;
+        // if the left child is present then push the data of the root node
+        if(root->left){
+            ans.push_back(root->data);
+            // visit next left child if present
+            leftBoundary(root->left, ans);
+        }else if(root->right){
+            ans.push_back(root->data);
+            leftBoundary(root->right, ans);
+        }
+    }
+
+    void rightBoundary(Node* root, vector<int>& ans){
+        // if the root is null then return 
+        if(!root) return;
+        // if the right child is present then push the data of the root node
+        if(root->right){
+            ans.push_back(root->data);
+            // visit next right child if present
+            rightBoundary(root->right, ans);
+        }else if(root->left){
+            ans.push_back(root->data);
+            rightBoundary(root->left, ans);
+        }
+    }
+
+    void leaves(Node* root, vector<int>& ans){
+        // if the root is null then return 
+        if(!root) return;
+        // if the left and right child is null then push the data of the root node
+        if(!root->left && !root->right){
+            ans.push_back(root->data);
+            return;
+        }
+        // visit the left and right child if present
+        leaves(root->left, ans);
+        leaves(root->right, ans);
+    }
+
+    vector<int> boundaryOfBinaryTree(Node* root) {
+        vector<int> ans;
+        if(!root) return ans;
+        ans.push_back(root->data);
+        leftBoundary(root->left, ans);
+        leaves(root->left, ans);
+        leaves(root->right, ans);
+        rightBoundary(root->right, ans);
+        return ans;
+    }
+};
+
+//! vertical order traversal of the binary tree 
+//~ 987. Vertical Order Traversal of a Binary Tree
+vector<vector<int>> verticalTraversal(Node* root){
+    map<int, map<int, multiset<int>>> mp;
+    queue<pair<Node*, pair<int, int>>> q;
+    q.push({root, {0, 0}});
+
+    while(!q.empty()){
+        auto p = q.front();
+        q.pop();
+        Node* node = p.first;
+        int x = p.second.first;
+        int y = p.second.second;
+        mp[x][y].insert(node->data);
+        if(node->left) q.push({node->left, {x - 1, y + 1}});
+        if(node->right) q.push({node->right, {x + 1, y + 1}});
+    }
+
+    vector<vector<int>> ans;
+    for(auto x : mp){
+        vector<int> temp;
+        for(auto y : x.second){
+            for(auto z : y.second){
+                temp.push_back(z);
+            }
+        }
+        ans.push_back(temp);
+    }
+    return ans;
+}
+
+//! Top View of the binary tree using Level Order Traversal 
+class Top_View{
+  public:
+    // Function to return a list of nodes visible from the top view
+    // from left to right in Binary Tree.
+    vector<int> topView(Node *root) {
+        
+        // declaring vector for storing the answer
+        vector<int> ans;
+        
+        // if root is null return ans 
+        if(root == NULL) return ans;
+        
+        // map store the element in sorted oreder
+        map<int,int> mpp;
+        
+        // queue for storing node and its order
+        queue<pair<Node*, int>> q;
+        
+        // push the root and its level into queue 
+        q.push({root, 0});
+        
+        while(!q.empty()){
+            
+            // pointer to the queue front element 
+            auto  it = q.front();
+            //remove the pointed element from the queue
+            q.pop();
+            
+            // poiting the stored queue node which is a tree node since we 
+            // are storing pair of node and int in queue 
+            Node* node = it.first;
+            
+            // poiting the line storing with the node in the queue
+            int line = it.second;
+            
+            // put the line and data or the node value into map only if 
+            // there are not present in the map first
+            if(mpp.find(line) == mpp.end()){
+                mpp[line] = node->data;
+            }
+            
+            // add selected node left and right node into queue with line 
+            // for left we are sending line-1
+            if(node->left != NULL) q.push({node->left, line-1});
+            // for right we are sending l(ine +1 
+            if(node->right != NULL) q.push({node->right, line+1});
+            
+        }
+        
+        // store the map element into vector for declaring answer
+        for(auto it : mpp){
+            ans.push_back(it.second);
+        }
+        return ans;
+        
+    }
+};
+
+//! Bottom View of Binary Tree
+class Bottom_View {
+  public:
+    vector <int> bottomView(Node *root) {
+        
+        // declaring the vector for answer
+        vector<int> ans;
+        
+        // if root is null return  ans
+        if(root == NULL) return ans;
+        
+        // map to store the element in sorted order
+        map<int,int> mpp;
+        // queue for storing the node and its order
+        queue<pair<Node*, int>> q;
+        // push the root and its line into queue
+        q.push({root, 0});
+        // while the queue is not empty
+        while(!q.empty()){
+            // pointer to the front element of the queue
+            auto it = q.front();
+            // remove the front element from the queue
+            q.pop();
+            // point the node and line of the node
+            Node* node = it.first;
+            // line of the node
+            int line = it.second;
+            // put the line and data of the node into map
+            mpp[line] = node->data;
+            
+            // push the left and right child of the node into queue
+            if(node->left != NULL) q.push({node->left, line-1});
+            if(node->right != NULL) q.push({node->right, line+1});
+        }
+        // store the map element into vector for declaring answer
+        for(auto it : mpp){
+            ans.push_back(it.second);
+        }
+        return ans;
+    }
+};
+
+//! 199. Binary Tree Right Side View
+class Right_Side_View{
+public:
+    // recursive function 
+    void recursion(Node* root , int level, vector<int>&res){
+        // base case 
+        if(root == NULL) return;
+        if(res.size() == level) res.push_back(root->data);
+        recursion(root->right, level+1, res);
+        recursion(root->left, level+1 , res);
+
+    }
+    vector<int> rightSideView(Node* root) {
+        vector<int> res;
+        recursion(root, 0, res);
+        return res;
+    }
+};
+
+//! 101. Symmetric Tree
 
 
 int main()
@@ -457,7 +746,7 @@ int main()
                                                 // / \    / \
                                                 // 4   5 6   7
     
-    //!                           binary traversal 
+    //!                        Binary Traversal 
 
     //! Inorder Traversal : left -> root -> right 
     // inorder(root);
@@ -536,18 +825,121 @@ int main()
     // cout << s.diameterOfBinaryTree(root) << endl;
     
     //! 110. Balanced Binary Tree
-    struct Node *root = new Node(3);
-    root->left = new Node(9);
-    root->right = new Node(20);
-    root->right->left = new Node(15);
-    root->right->right = new Node(7);
-    Balanced b;
-    if(b.isBalanced(root)){
-       cout << "yes the tree is balanced" << endl;
-    }else{ 
-        cout << "false" << endl;
-    }
-  
+    // struct Node *root = new Node(3);
+    // root->left = new Node(9);
+    // root->right = new Node(20);
+    // root->right->left = new Node(15);
+    // root->right->right = new Node(7);
+    // Balanced b;
+    // if(b.isBalanced(root)){
+    //    cout << "yes the tree is balanced" << endl;
+    // }else{ 
+    //     cout << "false" << endl;
+    // }
+    
+    //! 103. Binary Tree Zigzag Level Order Traversal
+    // struct Node *root = new Node(3);
+    // root->left = new Node(9);
+    // root->right = new Node(20);
+    // root->right->left = new Node(15);
+    // root->right->right = new Node(7);
+    // vector<vector<int>> ans = zigzagLevelOrder(root);
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     for (int j = 0; j < ans[i].size(); j++)
+    //     {
+    //         cout << ans[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+    
+    //! 124. Binary Tree Maximum Path Sum
+    // struct Node *root = new Node(1);
+    // root->left = new Node(2);
+    // root->right = new Node(3);
+    // Solution s;
+    // cout << s.maxPathSum(root) << endl;
+
+    //! 100. Same Tree
+    // struct Node *p = new Node(1);
+    // p->left = new Node(2);
+    // p->right = new Node(3);
+    // struct Node *q = new Node(1);
+    // q->left = new Node(2);
+    // q->right = new Node(3);
+    // if(isSameTree(p,q)){
+    //     cout << "yes the tree is same" << endl;
+    // }else{
+    //     cout << "no the tree is not same" << endl;
+    // }
+
+    //! 545. Boundary of Binary Tree
+    // struct Node *root = new Node(1);
+    // root->left = new Node(2);
+    // root->left->left = new Node(3);
+    // root->left->right = new Node(4);
+    // root->left->right->left = new Node(5);
+    // root->left->right->right = new Node(6);
+    // root->right = new Node(7);
+    // root->right->left = new Node(8);
+    // root->right->right = new Node(9);
+    // root->right->left->left = new Node(10);
+    // root->right->left->right = new Node(11);
+    // root->right->right->left = new Node(12);
+    // root->right->right->right = new Node(13);
+    // boundary b;
+    // vector<int> ans = b.boundaryOfBinaryTree(root);
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     cout << ans[i] << " ";
+    // }
+    // cout << endl; // 1 2 3 5 6 10 11 12 13 9 7 
+    
+    //! 987. Vertical Order Traversal of a Binary Tree
+    // struct Node *root = new Node(3);
+    // root->left = new Node(9);
+    // root->right = new Node(20);
+    // root->right->left = new Node(15);
+    // root->right->right = new Node(7);
+    // vector<vector<int>> ans = verticalTraversal(root);
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     for (int j = 0; j < ans[i].size(); j++)
+    //     {
+    //         cout << ans[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    //! 199. Binary Tree Right Side View
+    // struct Node *root = new Node(1);
+    // root->left = new Node(2);
+    // root->left->right = new Node(5);
+    // root->right = new Node(3);
+    // root->right->right = new Node(4);
+    // Right_Side_View r;
+    // vector<int> ans = r.rightSideView(root);
+    // for (int i = 0; i < ans.size(); i++)
+    // {
+    //     cout << ans[i] << " ";
+    // }
+    // cout << endl;
+    
+    //! 101. Symmetric Tree
+    // struct Node *root = new Node(1);
+    // root->left = new Node(2);
+    // root->left->left = new Node(3);
+    // root->left->right = new Node(4);
+    // root->right = new Node(2);
+    // root->right->left = new Node(4);
+    // root->right->right = new Node(3);
+    // if(isSymmetric(root)){
+    //     cout << "yes the tree is symmetric" << endl;
+    // }else{
+    //     cout << "no the tree is not symmetric" << endl;
+    // }
+ 
+
 
     return 0;
 }
