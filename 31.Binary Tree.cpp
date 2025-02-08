@@ -509,40 +509,54 @@ bool isSameTree(Node* p, Node* q) {
 //! boundary traversal of the binary tree 
 //~ 545. Boundary of Binary Tree
 class boundary{
-    public:
-    void leftBoundary(Node* root, vector<int>& ans){
-        // if the root is null then return 
-        if(!root) return;
+public:
+    void leftBoundary(Node *root, vector<int> &ans)
+    {
+        // if the root is null then return
+        if (!root) return;
         // if the left child is present then push the data of the root node
-        if(root->left){
+        if (root->left)
+        {
             ans.push_back(root->data);
             // visit next left child if present
             leftBoundary(root->left, ans);
-        }else if(root->right){
+        }
+        else if (root->right)
+        {
             ans.push_back(root->data);
             leftBoundary(root->right, ans);
-        }
+        } 
+        // store elements upto the leaf node 
     }
 
-    void rightBoundary(Node* root, vector<int>& ans){
-        // if the root is null then return 
-        if(!root) return;
+    void rightBoundary(Node *root, vector<int> &ans)
+    {
+        // if the root is null then return
+        if (!root)
+            return;
         // if the right child is present then push the data of the root node
-        if(root->right){
+        if (root->right)
+        {
             ans.push_back(root->data);
             // visit next right child if present
             rightBoundary(root->right, ans);
-        }else if(root->left){
+        }
+        else if (root->left)
+        {
             ans.push_back(root->data);
             rightBoundary(root->left, ans);
         }
     }
 
-    void leaves(Node* root, vector<int>& ans){
-        // if the root is null then return 
-        if(!root) return;
-        // if the left and right child is null then push the data of the root node
-        if(!root->left && !root->right){
+    void leaves(Node *root, vector<int> &ans)
+    {
+        // if the root is null then return
+        if (!root)
+            return;
+        // check if the node left and right child are null
+        // if yes then its a leaf node since leaf node has no child 
+        if (!root->left && !root->right)
+        {
             ans.push_back(root->data);
             return;
         }
@@ -551,9 +565,11 @@ class boundary{
         leaves(root->right, ans);
     }
 
-    vector<int> boundaryOfBinaryTree(Node* root) {
+    vector<int> boundaryOfBinaryTree(Node *root)
+    {
         vector<int> ans;
-        if(!root) return ans;
+        if (!root)
+            return ans;
         ans.push_back(root->data);
         leftBoundary(root->left, ans);
         leaves(root->left, ans);
@@ -715,6 +731,26 @@ public:
 };
 
 //! 101. Symmetric Tree
+class Symmetric {
+public:
+    bool symmetricReccursion(Node* left, Node* right) {
+        // if both are null return true if one of them are null return false
+        if (left == NULL || right == NULL)
+            return left == right;
+
+        // if current node of left and right is not equal return false
+        if (left->data != right->data)
+            return false;
+
+        return symmetricReccursion(left->left, right->right) &&
+               symmetricReccursion(left->right, right->left);
+    }
+    bool isSymmetric(Node* root) {
+        return root == NULL || symmetricReccursion(root->left, root->right);
+    }
+};
+
+//! 
 
 
 int main()
