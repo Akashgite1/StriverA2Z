@@ -60,6 +60,7 @@
     "iostream": "cpp",
     "new": "cpp",
     "ostream": "cpp",
-    "numbers": "cpp"
+    "numbers": "cpp",
+    "random": "cpp"
   }
 }
