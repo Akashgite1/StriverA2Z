@@ -590,9 +590,80 @@ public:
 //! combination sum II
 // Input: candidates = [10,1,2,7,6,1,5], target = 8
 // Output: [[1,1,6],[1,2,5],[1,7],[2,6]]
+void solve(vector<int> &candidates, int target, int ind, vector<int> &temp,
+           vector<vector<int>> &result)
+{
+    if (target == 0)
+    {
+        result.push_back(temp);
+        return;
+    }
+    for(int i = ind; i < candidates.size(); i++){
+        if(i > ind && candidates[i] == candidates[i - 1]){
+            continue;
+        }
+        if(target - candidates[i] < 0){
+            break;
+        }
+        temp.push_back(candidates[i]);
+        solve(candidates, target - candidates[i], i + 1, temp, result);
+        temp.pop_back();
+    }
 
+    // // Include the current element
+    // temp.push_back(candidates[ind]);
+    // solve(candidates, target - candidates[ind], ind + 1, temp, result);
+    // temp.pop_back();
 
+    // // Skip the duplicates
+    // while (ind + 1 < candidates.size() && candidates[ind] == candidates[ind + 1])
+    //     ind++;
 
+    // // Exclude the current element and move to the next index
+    // solve(candidates, target, ind + 1, temp, result);
+}
+
+vector<vector<int>> combinationSum2(vector<int> &candidates, int target)
+{
+    sort(candidates.begin(), candidates.end());
+    vector<int> temp;
+    vector<vector<int>> result;
+    solve(candidates, target, 0, temp, result);
+    return result;
+}
+
+//! Subset Sums I
+// Given a array arr of integers, return the sums of all subsets in the list.  Return the sums in any order 
+// Input: arr = [1, 2, 3]  Output: [0, 1, 2, 3, 4, 5, 6]
+class Subset_Sums_every_possible_combination
+{
+public:
+    void solve(vector<int> &arr, int ind, int sum, vector<int> &result)
+    {
+        if (ind == arr.size())
+        {
+            result.push_back(sum);
+            return;
+        }
+
+        sum += arr[ind];
+
+        solve(arr, ind + 1, sum, result);
+
+        sum -= arr[ind];
+        solve(arr, ind + 1, sum, result);
+    }
+    vector<int> Sums(vector<int> &arr)
+    {
+        // code here
+        vector<int> result;
+        solve(arr, 0, 0, result);
+        sort(result.begin(), result.end());
+        return result;
+    }
+};
+
+// 90 subset II
 
 
 int main()
@@ -747,9 +818,48 @@ int main()
     // }
 
     //? subset sum problem
-    vector<int> a = {1, 2, 3, 4};
-    int k = 5;
-    cout << isSubsetPresent(4, a) << endl; // 1
+    // vector<int> a = {1, 2, 3, 4};
+    // int k = 5;
+    // cout << isSubsetPresent(4, a) << endl; // 1
+
+    //? combination sum find all the combination of the element that sum up to the target
+    // vector<int> candidates = {2, 3, 6, 7};
+    // int target = 7;
+    // Combination_Sum c;
+    // vector<vector<int>> result = c.combinationSum(candidates, target);
+    // for (vector<int> v : result)
+    // {
+    //     for (int i : v)
+    //     {
+    //         cout << i << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    //? combination sum II
+    // vector<int> candidates = {10, 1, 2, 7, 6, 1, 5};
+    // int target = 8;
+    // vector<vector<int>> result = combinationSum2(candidates, target);
+    // for (vector<int> v : result)
+    // {
+    //     for (int i : v)
+    //     {
+    //         cout << i << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    //? Subset Sums I
+    vector<int> arr = {1, 2, 3};
+    Subset_Sums_every_possible_combination s;
+    vector<int> result = s.Sums(arr); // 0 1 2 3 4 5 6 
+    for (int i : result)
+    {
+        cout << i << " ";
+    }
+    cout << endl;
+   
+
 
 
     return 0;
