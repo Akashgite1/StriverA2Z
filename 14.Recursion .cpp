@@ -552,7 +552,8 @@ bool isSubsetPresent(int k, vector<int> &a)
     return solve(a, k , 0, 0);
 }
 
-//! combination sum find all the combination of the element that sum up to the target
+//! combination sum I
+// find all the combination of the element that sum up to the target
 // Input: candidates = [2,3,6,7], target = 7
 // Output: [[2,2,3],[7]] 
 class Combination_Sum
@@ -663,8 +664,298 @@ public:
     }
 };
 
-// 90 subset II
+//! 90 subset II
+void solve(vector<int>& nums, int index, vector<int> &temp, vector<vector<int>> &result)
+{
+    result.push_back(temp);
+    for (int i = index; i < nums.size(); i++)
+    {
+        if (i > index && nums[i] == nums[i - 1]) continue;
+        temp.push_back(nums[i]);
+        solve(nums, i + 1, temp, result);
+        temp.pop_back();
+    }
+}
 
+vector<vector<int>> subsetsWithDup(vector<int>& nums)
+{
+    vector<int> temp;
+    vector<vector<int>> result;
+    sort(nums.begin(), nums.end());
+    solve(nums, 0, temp, result);
+    return result;
+}
+
+//! combination sum III
+class Combination_Sum_III
+{
+public:
+    void solve(int n, int k, int index, int sum, vector<int> &temp,
+               vector<vector<int>> &result)
+    {
+
+        if (index > 9)
+        {
+            if (sum == n && temp.size() == k)
+            {
+                result.push_back(temp);
+            }
+            return;
+        }
+        temp.push_back(index);
+        solve(n, k, index + 1, sum + index, temp, result);
+        temp.pop_back();
+        solve(n, k, index + 1, sum, temp, result);
+    }
+    vector<vector<int>> combinationSum3(int k, int n)
+    {
+        vector<int> temp;
+        vector<vector<int>> result;
+        solve(n, k, 1, 0, temp, result);
+        return result;
+    }
+};
+
+//! Letter Combinations of a Phone Number
+class Solution
+{
+public:
+    vector<string> result;
+
+    void solve(int idx, string &digits, string &temp, unordered_map<char, string> &mp)
+    {
+
+        if (idx >= digits.length())
+        {
+            result.push_back(temp);
+            return;
+        }
+
+        char ch = digits[idx];
+        string str = mp[ch];
+
+        for (int i = 0; i < str.length(); i++)
+        {
+
+            // Do
+            temp.push_back(str[i]);
+            solve(idx + 1, digits, temp, mp);
+            temp.pop_back();
+        }
+    }
+
+    vector<string> letterCombinations(string digits)
+    {
+        if (digits.length() == 0)
+            return {};
+
+        unordered_map<char, string> mp;
+
+        mp['2'] = "abc";
+        mp['3'] = "def";
+        mp['4'] = "ghi";
+        mp['5'] = "jkl";
+        mp['6'] = "mno";
+        mp['7'] = "pqrs";
+        mp['8'] = "tuv";
+        mp['9'] = "wxyz";
+
+        string temp = "";
+
+        solve(0, digits, temp, mp);
+
+        return result;
+    }
+};
+
+//^                               Hard Problem 
+
+//! palindrome partitioning 
+class palindrome_partitioning{
+public:
+    vector<vector<string>> result;
+    bool ispalindrome(string s, int start, int end){
+        while(start < end){
+            if(s[start] != s[end]){
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+
+    void solve(string s, int index, vector<string> &temp){
+        if(index == s.size()){
+            result.push_back(temp);
+            return;
+        }
+
+        for(int i = index; i < s.size(); i++){
+            if(ispalindrome(s, index, i)){
+                temp.push_back(s.substr(index, i - index + 1));
+                solve(s, i + 1, temp);
+                temp.pop_back();
+            }
+        }
+    }
+
+    vector<vector<string>> partition(string s){
+        vector<string> temp;
+        solve(s, 0, temp);
+        return result;
+    }
+    // time complexity : O(n*2^n) sc : O(n)
+};
+
+//! Word Search
+
+//! N-Queens problems
+// Approach-1 (Simple dfs)
+// T.C : O(N!) - Read the reason above
+// S.C : O(N) to store the result
+class Solution
+{
+public:
+    vector<vector<string>> result;
+    bool isValid(vector<string> &board, int row, int col)
+    {
+        // look for up
+        for (int i = row; i >= 0; i--)
+        {
+            if (board[i][col] == 'Q')
+                return false;
+        }
+
+        // check left diagonal upwards
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--)
+        {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+
+        // check right diagonal upwards
+        for (int i = row, j = col; i >= 0 && j < board.size(); i--, j++)
+        {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+
+        /*
+            Wait a second, Why didn't I check any squares downwards ???
+            If you notice, every time I am calling dfs(board, row+1); i.e. after
+            placing a Queen at a row, I move down. So, It's guaranteed I will
+            not get any Queen downwards.
+            Example :
+
+            For n = 4
+
+                    _   _    _  Q   (Put int the first row)
+                    Q  _   _   _    (While putting here, I only need to see
+           above of me because I have not populated any Q in downwards) _   _ Q
+           _    (Same,  While putting here, I only need to see above of me
+           because I have not populated any Q in downwards)
+
+                    So, on
+
+    */
+
+        return true;
+    }
+    void solve(vector<string> &board, int row)
+    {
+        if (row == board.size())
+        {
+            result.push_back(board);
+            return;
+        }
+
+        /*
+            place one queen at every row and check before placing
+            in every directions where there is risk if being attackes
+            i.e. up, diagonally because we are placing queens from
+            top row to bottom row, so we need to check if we put a queen
+            vertically up in some row or diagonally upwards in some row
+        */
+        for (int i = 0; i < board.size(); i++)
+        {
+            if (isValid(board, row, i))
+            {
+                board[row][i] = 'Q';
+
+                solve(board, row + 1);
+
+                board[row][i] = '.';
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n)
+    {
+        if (n == 0)
+            return {};
+        vector<string> board(n, string(n, '.'));
+        // For, n = 3, board = {"...", "...", "..."} initially
+
+        solve(board, 0);
+
+        return result;
+    }
+};
+
+//! word search problem 
+// Space Complexity: O(L)
+// Time Complexity: O(M * N * 3^L)
+class Solution
+{
+public:
+    int l, m, n;
+    vector<vector<int>> directions{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    bool find(vector<vector<char>> &board, int i, int j, string &word, int idx)
+    {
+        if (idx >= l)
+            return true;
+
+        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[idx])
+            return false;
+
+        char temp = board[i][j];
+        board[i][j] = '$';
+
+        for (auto &dir : directions)
+        {
+            int i_ = i + dir[0];
+            int j_ = j + dir[1];
+
+            if (find(board, i_, j_, word, idx + 1))
+                return true;
+        }
+
+        board[i][j] = temp;
+        return false;
+    }
+
+    bool exist(vector<vector<char>> &board, string word)
+    {
+        m = board.size();
+        n = board[0].size();
+        l = word.length();
+        if (m * n < l)
+            return false;
+
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (board[i][j] == word[0] && find(board, i, j, word, 0))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+};
 
 int main()
 {
@@ -822,8 +1113,8 @@ int main()
     // int k = 5;
     // cout << isSubsetPresent(4, a) << endl; // 1
 
-    //? combination sum find all the combination of the element that sum up to the target
-    // vector<int> candidates = {2, 3, 6, 7};
+    //? combination sum I
+    // vector<int> candidates = {2, 3, 6, 7}; combination are ( 2 2 3 ) - 7   // ( 7 ) - 7
     // int target = 7;
     // Combination_Sum c;
     // vector<vector<int>> result = c.combinationSum(candidates, target);
@@ -834,7 +1125,7 @@ int main()
     //         cout << i << " ";
     //     }
     //     cout << endl;
-    // }
+    // }  
 
     //? combination sum II
     // vector<int> candidates = {10, 1, 2, 7, 6, 1, 5};
@@ -850,14 +1141,43 @@ int main()
     // }
 
     //? Subset Sums I
-    vector<int> arr = {1, 2, 3};
-    Subset_Sums_every_possible_combination s;
-    vector<int> result = s.Sums(arr); // 0 1 2 3 4 5 6 
-    for (int i : result)
-    {
-        cout << i << " ";
+    // vector<int> arr = {1, 2, 3};
+    // Subset_Sums_every_possible_combination s;
+    // vector<int> result = s.Sums(arr); // 0 1 2 3 4 5 6 
+    // for (int i : result)
+    // {
+    //     cout << i << " ";
+    // }
+    // cout << endl;
+
+    //? 90 subset II 
+    // vector<int> nums = {1, 2, 2};
+    // vector<vector<int>> result = subsetsWithDup(nums);
+    // for (vector<int> v : result)
+    // {
+    //     for (int i : v)
+    //     {
+    //         cout << i << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    //? combination sum III
+    int k = 3, n = 20; 
+    Combination_Sum_III c;
+    vector<vector<int>> result = c.combinationSum3(k, n);
+    if(result.size() == 0) cout<<"No combination found"<<endl;
+    for (vector<int> v : result)
+    {    
+        for (int i : v)
+        {
+            cout << i << " ";
+        }
+        cout << " subset that sum : " << n << endl;
+
     }
-    cout << endl;
+
+
    
 
 
