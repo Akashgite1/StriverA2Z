@@ -2,58 +2,7 @@
 
 using namespace std;
 
-// conditional statements in c++ used for defing the condition in the code
-// like if the 1 is smaller then 2 
-// if -- for sigle condition
-// else if condition does not meet the else execute
-// else if -- for multiple condition
-
-//! example of if statem
-// if the n == 10 then print "n is 10"
-void print()
-{
-    int n = 10;
-    if (n == 10)
-    {
-        cout << "n is 10" << endl;
-    }
-    
-}
-
-//! example of if else statement
-// if the n == 10 then print "n is 10" else print "n is not 10"
-void print2()
-{
-    int n = 10;
-    if (n == 10)
-    {
-        cout << "n is 10" << endl;
-    }
-    else
-    {
-        cout << "n is not 10" << endl;
-    }
-}
-
-//! example of if else if statement
-// if the n == 10 then print "n is 10" else if n == 20 then print "n is 20" else print "n is not 10 or 20"
-void print3()
-{
-    int n = 10;
-    if (n == 10)
-    {
-        cout << "n is 10" << endl;
-    }
-    else if (n == 20)
-    {
-        cout << "n is 20" << endl;
-    }
-    else
-    {
-        cout << "n is not 10 or 20" << endl;
-    }
-}
-
+//! Loops (for, while) , Switch Staments ,  Condtionals (if else) 
 
 
 int main()

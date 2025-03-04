@@ -717,7 +717,7 @@ public:
 };
 
 //! Letter Combinations of a Phone Number
-class Solution
+class  Letter_Combinations
 {
 public:
     vector<string> result;
@@ -814,7 +814,7 @@ public:
 // Approach-1 (Simple dfs)
 // T.C : O(N!) - Read the reason above
 // S.C : O(N) to store the result
-class Solution
+class  N_Queens
 {
 public:
     vector<vector<string>> result;
@@ -905,11 +905,12 @@ public:
 //! word search problem 
 // Space Complexity: O(L)
 // Time Complexity: O(M * N * 3^L)
-class Solution
+class  word_search
 {
 public:
     int l, m, n;
     vector<vector<int>> directions{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
     bool find(vector<vector<char>> &board, int i, int j, string &word, int idx)
     {
         if (idx >= l)
@@ -956,6 +957,10 @@ public:
         return false;
     }
 };
+
+//! Rat in a maze 
+
+
 
 int main()
 {
@@ -1163,24 +1168,49 @@ int main()
     // }
 
     //? combination sum III
-    int k = 3, n = 20; 
-    Combination_Sum_III c;
-    vector<vector<int>> result = c.combinationSum3(k, n);
-    if(result.size() == 0) cout<<"No combination found"<<endl;
-    for (vector<int> v : result)
-    {    
-        for (int i : v)
-        {
-            cout << i << " ";
-        }
-        cout << " subset that sum : " << n << endl;
+    // int k = 3, n = 20; 
+    // Combination_Sum_III c;
+    // vector<vector<int>> result = c.combinationSum3(k, n);
+    // if(result.size() == 0) cout<<"No combination found"<<endl;
+    // for (vector<int> v : result)
+    // {    
+    //     for (int i : v)
+    //     {
+    //         cout << i << " ";
+    //     }
+    //     cout << " subset that sum : " << n << endl;
+    // }
 
+    //? Letter Combinations of a Phone Number
+    // Solution s;
+    // vector<string> result = s.letterCombinations("23");
+    // for (string s : result)
+    // {
+    //     cout << s << endl;
+    // }
+
+    //? palindrome partitioning
+    // palindrome_partitioning p;
+    // vector<vector<string>> result = p.partition("aab");
+    // for (vector<string> v : result)
+    // {
+    //     for (string s : v)
+    //     {
+    //         cout << s << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    //? Word Search
+    word_search w;
+    vector<vector<char>> board = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
+    string word = "ABCCED";
+    if(w.exist(board, word)){
+        cout << "Word found" << endl;
+    }else{
+        cout << "Word not found" << endl;
     }
-
-
-   
-
-
+  
 
     return 0;
 }
