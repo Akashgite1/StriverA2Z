@@ -809,6 +809,64 @@ public:
 };
 
 //! Word Search
+/*Space Complexity: O(L)
+Time Complexity: O(M * N * 3^L)
+Space Complexity is because of recursion - to store function stack context.
+Time Complexity - from every block we go in three adjacent blocks (avoiding the direction we came from).
+This walk can go for max of L times. So each thred at most goes L length long. -> O(3^L).
+Now this is applied at each node from main calling function -> O(M * N). Therefore, O(M * N * 3^L).
+*/
+class Word_Search
+{
+public:
+    int l, m, n;
+    vector<vector<int>> directions{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    bool find(vector<vector<char>> &board, int i, int j, string &word, int idx)
+    {
+        if (idx >= l)
+            return true;
+
+        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[idx])
+            return false;
+
+        char temp = board[i][j];
+        board[i][j] = '$';
+
+        for (auto &dir : directions)
+        {
+            int i_ = i + dir[0];
+            int j_ = j + dir[1];
+
+            if (find(board, i_, j_, word, idx + 1))
+                return true;
+        }
+
+        board[i][j] = temp;
+        return false;
+    }
+
+    bool exist(vector<vector<char>> &board, string word)
+    {
+        m = board.size();
+        n = board[0].size();
+        l = word.length();
+        if (m * n < l)
+            return false;
+
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (board[i][j] == word[0] && find(board, i, j, word, 0))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+};
 
 //! N-Queens problems
 // Approach-1 (Simple dfs)
@@ -958,7 +1016,203 @@ public:
     }
 };
 
-//! Rat in a maze 
+//! Rat in a maze
+void solve(int i, int j, vector<vector<int>> &mat, int n, vector<string> &ans,
+           string move, vector<vector<int>> &visited)
+{
+    if (i == n - 1 && j == n - 1)
+    {
+        ans.push_back(move);
+        return;
+    }
+
+    // Mark as visited before making recursive calls
+    visited[i][j] = 1;
+
+    // Move Down
+    if (i + 1 < n && !visited[i + 1][j] && mat[i + 1][j] == 1)
+        solve(i + 1, j, mat, n, ans, move + 'D', visited);
+
+    // Move Left
+    if (j - 1 >= 0 && !visited[i][j - 1] && mat[i][j - 1] == 1)
+        solve(i, j - 1, mat, n, ans, move + 'L', visited);
+
+    // Move Right
+    if (j + 1 < n && !visited[i][j + 1] && mat[i][j + 1] == 1)
+        solve(i, j + 1, mat, n, ans, move + 'R', visited);
+
+    // Move Up
+    if (i - 1 >= 0 && !visited[i - 1][j] && mat[i - 1][j] == 1)
+        solve(i - 1, j, mat, n, ans, move + 'U', visited);
+
+    // Unmark before backtracking
+    visited[i][j] = 0;
+}
+
+vector<string> findPath(vector<vector<int>> &m, int n)
+{
+    vector<string> ans;
+    vector<vector<int>> visited(n, vector<int>(n, 0));
+    if(m[0][0] == 1){
+        solve(0, 0, m, n, ans, "", visited);
+    }
+    return ans;
+}
+
+//! word break problem
+bool solve(int id, string &s, vector<string> &dict)
+{
+    if (id == s.size())
+    {
+        return true;
+    }
+
+    // if s as whole string present in the dictionary then return true
+    // for example s = "s" and dict = ["s"] then return true
+    if (find(dict.begin(), dict.end(), s) != dict.end())
+    {
+        return true;
+    }
+
+    // now we will check for all the possible substring of the string s
+    for (int i = 1; i < s.size(); i++)
+    {
+
+        // get the substring of the string s
+        string temp = s.substr(id, i);
+        // find the substring in the dictionary
+        // if found then call the recursion for the rest of the string
+        if (find(dict.begin(), dict.end(), temp) != dict.end() && solve(id + i, s, dict))
+        {
+            return true;
+        }
+    }
+    // if nothing found then return false
+    return false;
+}
+bool wordBreak(string s, vector<string> &wordDict)
+{
+
+    return solve(0, s, wordDict);
+}
+
+//! M-Coloring Problem
+class M_Coloring
+{
+public:
+    bool isSafe(int node, vector<int> &color, vector<vector<int>> &adj, int col)
+    {
+        for (int neighbor : adj[node])
+        {
+            if (color[neighbor] == col)
+                return false; // Adjacent node has the same color
+        }
+        return true;
+    }
+
+    bool solve(int node, int v, vector<int> &color, vector<vector<int>> &adj, int m)
+    {
+        if (node == v)
+            return true; // All nodes are colored
+
+        for (int i = 1; i <= m; i++)
+        { // Try different colors
+            if (isSafe(node, color, adj, i))
+            {
+                color[node] = i;
+                if (solve(node + 1, v, color, adj, m))
+                    return true; // Recursive call
+                color[node] = 0; // Backtrack
+            }
+        }
+        return false;
+    }
+
+    bool graphColoring(int v, vector<pair<int, int>> &edges, int m)
+    {
+        vector<vector<int>> adj(v); // Adjacency list
+        for (auto &edge : edges)
+        {
+            adj[edge.first].push_back(edge.second);
+            adj[edge.second].push_back(edge.first);
+        }
+
+        vector<int> color(v, 0);           // Initialize color array
+        return solve(0, v, color, adj, m); // Start from node 0
+    }
+};
+
+//! sudoku solver 
+// rules :
+// 1. Each row must have the numbers 1-9 occuring just once. 
+// 2. Each column must have the numbers 1-9 occuring just once.
+// 3. And the numbers 1-9 must occur just once in each of the 9 sub-boxes of the grid.
+
+class Sudoku_Solver
+{
+
+public:
+    bool isValid(vector<vector<char>> &board, int row, int col, char c)
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            // check for the row
+            if (board[i][col] == c)
+                return false;
+            // check for the column
+            if (board[row][i] == c)
+                return false;
+            // check for the 3*3 grid
+            if (board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] == c)
+                return false;
+        }
+        // if no false return true 
+        return true;
+    }
+
+    bool solve(vector<vector<char>> &board)
+    {
+        // traverse the board 
+        for (int i = 0; i < board.size(); i++)
+        {
+            for (int j = 0; j < board[0].size(); j++)
+            {
+                // find the empty cell
+                if (board[i][j] == '.')
+                {
+                    // try all the possible number from 1 to 9 
+                    for (char c = '1'; c <= '9'; c++)
+                    {
+                        // check if the number is valid or not 
+                        if (isValid(board, i, j, c))
+                        {
+                            // if valid then put the number in the cell 
+                            board[i][j] = c;
+                            
+                            // recursive call for the rest of the board if all possible combination 
+                            // for board find then return true since we have to only return one 
+                            // solution 
+                            if (solve(board))
+                                return true;
+                            else
+                            // remove the character
+                                board[i][j] = '.';
+                        }
+                    }
+
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    void solveSudoku(vector<vector<char>> &board)
+    {
+        solve(board);
+    }
+    // time complexity : O(9^(n^2)) n = 9 at worst case 9^81 = 981≈1.96×10^77
+    //  sc : O(n^2) 
+};
 
 
 
@@ -1202,15 +1456,31 @@ int main()
     // }
 
     //? Word Search
-    word_search w;
-    vector<vector<char>> board = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
-    string word = "ABCCED";
-    if(w.exist(board, word)){
-        cout << "Word found" << endl;
-    }else{
-        cout << "Word not found" << endl;
-    }
-  
+    // word_search w;
+    // vector<vector<char>> board = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
+    // string word = "ABCCED";
+    // if(w.exist(board, word)){
+    //     cout << "Word found" << endl;
+    // }else{
+    //     cout << "Word not found" << endl;
+    // }
+
+    //? Rat in a maze
+    // vector<vector<int>> m = {{1, 0, 0, 0}, {1, 1, 0, 1}, {1, 1, 0, 0}, {0, 1, 1, 1}};
+    // vector<string> result = findPath(m, 4);
+    // for (string s : result)
+    // {
+    //     cout << s << " ";
+    // }
+    // cout << endl;
+
+    //? word break problem
+    vector<string> dict = {"leet", "code"};
+    string s = "leetcode";
+    cout << wordBreak(s, dict) << endl;
+
+
+
 
     return 0;
 }
