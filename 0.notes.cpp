@@ -44,52 +44,10 @@
 #include <cinttypes> // for cinttypes
 #include <limits> // for limits
 
+
 using namespace std;
 
-void print()
-{
-    int a, b;
-    cin >> a >> b;
 
-    //     //! Comparison Operators
-    // < check left operand greter then the right operand
-    //  a < b her its check whether a is greter then b or not
-    bool ans = a < b;
-
-    cout << ans << endl;
-
-    bool c = a > b;
-
-    cout << c;
-}
-
-void difference()
-
-{
-    // end plays role her with &nums its pass-by-reference
-    // without end its pass by value or copy of it nums
-
-    //-- pass by values and pass by refrence anolgy --
-
-    // at pass by refrence we give actual value to the function
-    // for modifiton and manuplation on it
-    // &nums
-    // 1.vector<int> &nums: This declares nums as a reference to a vector of integers. When you pass a vector to a function with this parameter type, you're passing a reference to the original vector. Any modifications made to nums inside the function will directly affect the original vector passed to the function. This approach is useful when you want to modify the original vector within the function without creating a copy.
-
-    //  at pass by value we make a copy of it and give it to fucnct
-    // for modification and updatation or manuplation on it
-    //  num
-    // 2.vector<int> nums: This declares nums as a vector of integers. When you pass a vector to a function with this parameter type, you're passing a copy of the original vector. Any modifications made to nums inside the function will not affect the original vector passed to the function. This approach is useful when you want to work with a copy of the vector without modifying the original.
-}
-
-void about_swap_function()
-{
-    // In the swap function, you don't need to use the address-of operator (&) because swap should take the values of the elements, not their addresses.
-
-    // swap(num[i],num[n-1]); correct
-
-    // swap(&num[i], &num[n-1]) wrong
-}
 
 void primenumebrs()
 {
@@ -194,61 +152,86 @@ void swap(int a, int b)
      // so the temp is again empty and a = 15 and b = 10
 }
 
-// Rorating the 2d array 90degree
-void rotate(int arr[3][3])
-{
-    // 1 2 3
-    // 4 5 6
-    // 7 8 9   sample array
-
-    // 7 4 1
-    // 8 5 2
-    // 9 6 3  -- after rotating 90 degree rotation
-
-    // 7 8 9
-    // 4 5 6
-    // 1 2 3 --  180 degree rotation
-
-    // 1 4 7
-    // 2 5 8
-    // 3 6 9 -- 270 degree rotation
-
-    // 3 2 1
-    // 6 5 4
-    // 9 8 7 -- 360 degree rotation
-
-
-    // easist way to rotate the 2d array is to take the transpose of the array
-    // and then reverse the array row wise or column wise
-
-    // sample array         // transpose         // reverse
-    // 1 2 3                // 1 4 7             // 7 4 1
-    // 4 5 6                // 2 5 8             // 8 5 2
-    // 7 8 9                // 3 6 9             // 9 6 3
-    
-} 
-
-// comparator function vs lambada function
-
+//! comparator function vs lambada function
 // comparator function
 bool compare(int a, int b)
 {
     return a < b; // if a is less then b then return true
 }  
-// it takes two arguments and return the boolean value true or false
-
 
 // lambada function
 auto comparee = [](int a, int b) { return a < b; }; // it takes two arguments and return the boolean value true or falseWe can use a lambda function to define a custom comparison function for sorting. A lambda function is an anonymous function that can be used as a function object. It is defined using the syntax [capture list] (parameters) { function body }. In this case, the lambda function takes two integers a and b as parameters and returns true if a is less than b, and false otherwise. This lambda function can be used as a custom comparison function in the sort function to sort a vector of integers in ascending order.
 
+//! prime numbers and sieve of eratosthenes algorithm
+// use for finding the prime number upto 2 to n 
+// 0 1 are not prime number
+// prime number are those number which are only divisible by 1 and itself 
+// for example 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 
+// basic algorithm 
+// for checking if the number is prime or not 
+// you just need to run a loop from 2 to n is the number itself 
+// check if you find any other number is divisible by the num if you find then you return false
+//^ since the rule is simple prime number are only divisible by 1 and itself 
+//! begineer approach time complexity : O(n) sc : O(1) 
+// not suitable for large number like 10^6 or 10^7 
+bool isprime(int n){
+    if(n == 0 || n == 1){
+        return false;
+    }
+    for(int i = 2; i < n; i++){
+        if(n % i == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+// using sqrt for checking the prime numbers 
+// we can use the sqrt for checking the prime number 
+// for example 36 is the number
+// the sqrt of 36 is 6
+
+
 
 int main()
 {
+    //? prime numbers
+    // primenumebrs();
 
+    //? min and max
     // int arr[] = {5, 3, 8, 2, 10};
-    // int n = 5;
-    // min_max(arr,n);
-    // cout << "Hello World" << endl;
-     
+    // min_max(arr, 5);
+
+    //? swap function
+    // int a = 10, b = 15;
+    // swap(a, b);
+    // cout << a << " " << b << endl;
+
+    //? comparator function vs lambada function
+    // vector<int> v = {5, 3, 8, 2, 10};
+    // sort(v.begin(), v.end(), compare);
+    // for (int i : v)
+    // {
+    //     cout << i << " ";
+    // }
+    // cout << endl;
+    // vector<int> v = {5, 3, 8, 2, 10};
+    // sort(v.begin(), v.end(), comparee);
+    // for (int i : v)
+    // {
+    //     cout << i << " ";
+    // }
+    // cout << endl;
+
+    //? sieve of eratosthenes
+    // for(int i = 0; i <= 100; i++){
+    //     if(isprime(i)){
+    //         cout << i << " ";
+    //     }
+    // }
+    // cout << endl;
+
+
+
     return 0;
 }
