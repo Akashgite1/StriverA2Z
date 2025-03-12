@@ -75,7 +75,7 @@ The sheet is divided into multiple levels, progressing from beginner-friendly pr
 ## ⚙️ How to Use this Repository?
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/Striver_A2Z_DSA.git
+   git clone https://github.com/Akashgite1/StriverA2Z.git
    ```
 2. Navigate to the desired topic and open the corresponding C++ file.
 3. Run the code using a C++ compiler like **g++** or any IDE of your choice.
@@ -106,9 +106,9 @@ Feel free to contribute by improving solutions or adding alternative approaches.
 ## 📞 Connect with Me
 If you have any queries, feel free to reach out or open an issue.
 
-📧 Email: your-email@example.com  
-📌 LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)  
-💻 GitHub: [Your GitHub](https://github.com/yourusername)
+📧 Email: akashgite550@gmail.com 
+📌 LinkedIn: [Your Profile](https://www.linkedin.com/in/akash-gite-257a4323b/)  
+💻 GitHub: [Your GitHub](https://www.linkedin.com/in/akash-gite-257a4323b/)
 
 ---
 

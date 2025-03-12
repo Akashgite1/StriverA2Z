@@ -1215,8 +1215,64 @@ public:
 };
 
 //! Expression Add Operators
+// given a string expression  string exp = "123" and a target value target = 6 
+// we have to add the operator + , - , * in between the string to get the target value 
+// we have to return all the possible combination of the string that will give the target value
 
+class Expression_Add_Operators
+{
+public:
+    vector<string> ans;
 
+    vector<string> addOperators(string s, int target)
+    {
+        helper(s, target, 0, "", 0, 0);
+        return ans;
+    }
+
+    void helper(string s, int target, int i, const string &path, long eval, long residual)
+    {
+        // Base Case: If end of string is reached
+        if (i == s.length())
+        {
+            if (eval == target)
+            {
+                ans.push_back(path);
+            }
+            return;
+        }
+
+        string currStr;
+        long num = 0;
+
+        // Backtracking loop
+        for (int j = i; j < s.length(); j++)
+        {
+            // Handle leading zeros
+            if (j > i && s[i] == '0')
+                return;
+
+            currStr += s[j];
+            num = num * 10 + (s[j] - '0');
+
+            if (i == 0)
+            {
+                // Starting case (no operator before the first number)
+                helper(s, target, j + 1, path + currStr, num, num);
+            }
+            else
+            {
+                // '+' Operation
+                helper(s, target, j + 1, path + "+" + currStr, eval + num, num);
+                // '-' Operation
+                helper(s, target, j + 1, path + "-" + currStr, eval - num, -num);
+                // '*' Operation
+                helper(s, target, j + 1, path + "*" + currStr, eval - residual + residual * num, residual * num);
+            }
+        }
+    }
+    // time complexity : O(4^n) sc : O(n) 
+};
 
 int main()
 {
@@ -1477,10 +1533,43 @@ int main()
     // cout << endl;
 
     //? word break problem
-    vector<string> dict = {"leet", "code"};
-    string s = "leetcode";
-    cout << wordBreak(s, dict) << endl;
+    // vector<string> dict = {"leet", "code"};
+    // string s = "leetcode";
+    // cout << wordBreak(s, dict) << endl;
 
+    //? M-Coloring Problem
+    // M_Coloring m;
+    // vector<pair<int, int>> edges = {{0, 1}, {1, 2}, {2, 0}};
+    // cout << m.graphColoring(3, edges, 3) << endl;
+
+    //? sudoku solver
+    // Sudoku_Solver s;
+    // vector<vector<char>> board = {{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+    //                               {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+    //                               {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+    //                               {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+    //                               {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+    //                               {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+    //                               {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+    //                               {'.', '.', '.', '4', '1', '9', '.', '.', '5'}, 
+    //                               {'.', '.', '.', '.', '8', '.', '.', '7', '9'}};
+    // s.solveSudoku(board);
+    // for (vector<char> v : board)
+    // {
+    //     for (char c : v)
+    //     {
+    //         cout << c << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    //? Expression Add Operators    
+    Expression_Add_Operators e;
+    vector<string> result = e.addOperators("123", 6);
+    for (string s : result)
+    {
+        cout << s << endl;
+    }
 
 
 
