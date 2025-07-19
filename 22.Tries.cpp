@@ -3,10 +3,17 @@
 
 using namespace std;
 
-// Implementing the trie data structure 
+// Implementing The Trie Data Structure + String
+// Trie operations: insertion, search, and removal with time complexity
+// INSERTION: O(L) where L is the length of the word
+// SEARCH: O(L) where L is the length of the word
+// REMOVAL: O(L) where L is the length of the word
+// used for solving string problems with space optimization 
+
+// Trie class 
 class TrieNode {
 public:
-   char data;
+   char data; // character data elemenet 
    TrieNode* children[26]; // array of pointers to children nodes
     bool isTerminal; // last node declared as end of word
 
@@ -19,7 +26,7 @@ public:
     }
 
     // removal operation in trie
-    
+
 };
 
 
@@ -87,13 +94,21 @@ public:
     bool search(string word){
         return searchUtil(root, word);
     }
+
+    // making the remove function with utility function
+    void remove(TrieNode* root, string word){
+        
+    } 
 };
 
 
 
 int main (){
+    // creating a trie object and inserting a word into it
     Trie* t = new Trie();
+    // inserting words into the trie
     t->insertWord("HELLO");
+    // checking if the word is present in the trie 
     cout << "present Or not in the trie "<<t->search("HELLO")<<endl;
     
     return 0;
