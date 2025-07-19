@@ -335,9 +335,187 @@ public:
     }
 };
 
+//& !-------------------------> 2-d DP quations ----------------------------------!
+
+//! Ninjas training problem 
+ class Ninja_traning
+ {
+    public: 
+    // ^ simple recursion  TC = O(3^n) SC = O(n)
+    int solve(int day,  int lastTask, vector<vector<int>>& points){
+        // base case 
+        if(day == 0){
+            int maxi = 0;
+            // since ninja have 3 task to do in single day
+            for(int task = 0; task < 3; task++){
+               // make sure selected task is not same as last task 
+               if(task != lastTask){
+                   maxi = max(maxi,points[0][task]);
+               } 
+            }
+            return maxi; 
+        }
+
+        // if its not 0th day that means it not last recursion call
+        int maxi = 0; 
+        for(int task = 0; task < 3; task++){
+            // make sure selected task is not same as last task 
+            if(task != lastTask){
+                int point = max(maxi,points[day][task] + solve(day-1,task,points));
+                maxi = max(maxi,point);
+            }
+        }
+        return maxi;
+
+    }
+    // ^ Memoization  TC = O(n) SC = O(n) + stack space O(n)
+    int solve1(int day, int lastTask, vector<vector<int>> &points, vector<vector<int>> &dp)
+    {
+        /*
+          declaration of dp vector for this 
+          vector<vector<int>> dp(n, vector<int>(4, -1));
+          its a vector by vector of size n there are 4 column in it at each 
+          sub vector and all filled with -1 initially 
+        */
+
+        if (day == 0)
+        {
+            int maxi = 0;
+            for (int task = 0; task < 3; task++)
+            {
+                if (task != lastTask)
+                {
+                    maxi = max(maxi, points[0][task]);
+                }
+            }
+            return dp[day][lastTask] = maxi;
+        }
+        
+        // if the subproblem is solved before 
+        if (dp[day][lastTask] != -1)return dp[day][lastTask];
+
+        int maxi = 0;
+        for (int task = 0; task < 3; task++)
+        {
+            if (task != lastTask)
+            {
+                int point = max(maxi, points[day][task] + solve1(day - 1, task, points, dp));
+                maxi = max(maxi, point);
+            }
+        }
+        return dp[day][lastTask] = maxi;
+    }
+
+    // ^ Tabulation  TC = O(n) SC = O(n) avoiding stack space
+    int solve2(int n, vector<vector<int>> &points)
+    {
+        // Initialize a vector to store the maximum points for the previous day's activities
+        vector<int> prev(4, 0);
+
+        // Initialize the DP table for the first day (day 0)
+        prev[0] = max(points[0][1], points[0][2]);
+        prev[1] = max(points[0][0], points[0][2]);
+        prev[2] = max(points[0][0], points[0][1]);
+        prev[3] = max(points[0][0], max(points[0][1], points[0][2]));
+
+        // Iterate through the days starting from day 1
+        for (int day = 1; day < n; day++)
+        {
+            // Create a temporary vector to store the maximum points for the current day's activities
+            vector<int> temp(4, 0);
+            for (int last = 0; last < 4; last++)
+            {
+                temp[last] = 0;
+                // Iterate through the tasks for the current day
+                for (int task = 0; task <= 2; task++)
+                {
+                    if (task != last)
+                    {
+                        // Calculate the points for the current activity and add it to the
+                        // maximum points obtained on the previous day (stored in prev)
+                        temp[last] = max(temp[last], points[day][task] + prev[task]);
+                    }
+                }
+            }
+            // Update prev with the maximum points for the current day
+            prev = temp;
+        }
+
+        // The maximum points for the last day with any activity can be found in prev[3]
+        return prev[3];
+    }
+ }; 
+
+//! Unique Paths
+class UniquePaths {
+    public:
+    //^ simple recursion  TC = O(2^(m+n)) SC = O(m+n)
+    int solve(int i, int j){
+        // base case 
+        if(i == 0 && j == 0) return 1; // only one way to reach the starting point 
+        if(i < 0 || j < 0) return 0; // out of bounds 
+
+        int up = solve(i-1,j); // move up
+        int left = solve(i,j-1); // move left
+        return up + left; // total ways to reach the point
+
+    }
+
+    //^ Memoization  TC = O(m*n) SC = O(m+n) + stack space O((m-1) + (n-1)) recursion call
+    int solve1(int i, int j, vector<vector<int>>&dp){
+        // base case 
+        if(i == 0 && j == 0) return 1; // only one way to reach the starting point 
+        if(i < 0 || j < 0) return 0; // out of bounds 
+
+        if(dp[i][j] != -1) return dp[i][j]; // check if already calculated 
+
+        int up = solve1(i-1,j,dp); // move up
+        int left = solve1(i,j-1,dp); // move left
+        return dp[i][j] = up + left; // total ways to reach the point
+
+    }
+
+    //^ Tabulation  TC = O(m*n) SC = O(m*n) avoiding stack space
+    int solve2(int m, int n){
+        vector<vector<int>> dp(m, vector<int>(n, 0)); // create a dp table 
+
+        // base case 
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(i == 0 && j == 0) dp[i][j] = 1; // only one way to reach the starting point 
+                else{
+                    if(i > 0) dp[i][j] += dp[i-1][j]; // move up
+                    if(j > 0) dp[i][j] += dp[i][j-1]; // move left
+                    dp[i][j] = dp[i][j]; // total ways to reach the point
+                }
+            }
+        }
+        return dp[m-1][n-1]; // return the total ways to reach the bottom right corner 
+    }
+
+    //^ Tabulation with Space Optimization TC = O(m*n) SC = O(n) avoiding stack space
+    int solve3(int m, int n){
+        vector<int> prev(n, 0); // create a dp table 
+
+        // base case 
+        for(int i = 0; i < m; i++){
+            vector<int> curr(n, 0); // create a dp table 
+            for(int j = 0; j < n; j++){
+                if(i == 0 && j == 0) curr[j] = 1; // only one way to reach the starting point 
+                else{
+                    if(i > 0) curr[j] += prev[j]; // move up
+                    if(j > 0) curr[j] += curr[j-1]; // move left
+                }
+            }
+            prev = curr; // update the previous row with the current row 
+        }
+        return prev[n-1]; // return the total ways to reach the bottom right corner 
+    }
+
+};
 
 int main (){
-
+   
     //^ Fibonacci Series using Dynamic Programming
     // fibo obj;
     // int n = 10; // 10th fibonacci number is 55
@@ -364,7 +542,7 @@ int main (){
     //^ House Robber I
     // Solution obj4;
     // vector<int> nums = {2, 7, 9, 3, 1};
-    //! // simple recursion
+    //  //! simple recursion
     // cout << obj4.solve(nums, nums.size() - 1) << endl;
     //! // memoization
     // vector<int> dp(nums.size(), -1);
@@ -377,14 +555,33 @@ int main (){
     // house_robber obj5;
     // vector<int> nums = {114,117,207,117,235,82,90,67,143,146,53,108,200,91,80,223,58,170,110,236,81,90,222,160,165,195,187,199,114,235,197,187,69,129,64,214,228,78,188,67,205,94,205,169,241,202,144,240}; // answer = 4077
     // //! simple recursion 
-    // // cout << obj5.solve(nums, nums.size() - 1) << endl;
-    // // //! memoization
-    // // cout << obj5.rob(nums) << endl;
-    // // //! tabulation
-    // // cout << obj5.solve2(nums) << endl;
+    //  cout << obj5.solve(nums, nums.size() - 1) << endl;
+    //! memoization
+    //  cout << obj5.rob(nums) << endl;
+    //! tabulation
+    //  cout << obj5.solve2(nums) << endl;
     // //! tabulation with space optimization 
     // cout << obj5.robII(nums) << endl;
-  
+
+    //^ Ninja Training Problem 
+    // Ninja_traning obj6;
+    // vector<vector<int>> points = {{1,2,3},{4,5,6},{7,8,9}};
+    // int n = points.size();
+    // vector<vector<int>> dp(n, vector<int>(4, -1)); // Initialize dp table
+    // cout << obj6.solve(n-1, 3, points) << endl; //! Simple Recursion
+    // cout << obj6.solve1(n-1, 3, points, dp) << endl; //! Memoization
+    // cout << obj6.solve2(n, points) << endl; //! Tabulation
+    
+    //^ Unique Paths
+    UniquePaths obj;
+    int m = 3, n = 7;                        // 3 rows and 7 columns
+    cout << obj.solve(m - 1, n - 1) << endl; // simple recursion
+    vector<vector<int>> dp(m, vector<int>(n, -1)); // Initialize dp table
+    cout << obj.solve1(m - 1, n - 1, dp) << endl; // memoization
+    cout << obj.solve2(m, n) << endl; // tabulation
+    cout << obj.solve3(m, n) << endl; // tabulation with space optimization
+
+    
 
     return 0;
 }
