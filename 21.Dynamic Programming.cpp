@@ -517,69 +517,71 @@ class UniquePaths {
 int main (){
    
     //^ Fibonacci Series using Dynamic Programming
-    // fibo obj;
-    // int n = 10; // 10th fibonacci number is 55
-    // vector<int> dp(n+1,-1); 
-    // cout<<obj.f(n,dp)<<endl;
+     // fibo obj;
+     // int n = 10; // 10th fibonacci number is 55
+     // vector<int> dp(n+1,-1); 
+     // cout<<obj.f(n,dp)<<endl;
+
 
     //^ Climbing Stairs
-    // climing obj1;
-    // cout<<obj1.fib1(5)<<endl; 
-
+     // climing obj1;
+     // cout<<obj1.fib1(5)<<endl; 
+ 
     //^ Frog Jump
-    // frog obj2;
-    // vector<int> height = {10,30,40,20};
-    // cout<<obj2.solve(3,height)<<endl;
+     // frog obj2;
+     // vector<int> height = {10,30,40,20};
+     // cout<<obj2.solve(3,height)<<endl;
 
     //^ Frog Jump II 
-    // jumpII obj3;
-    // vector<int> arr = {0,1,3,6,9,12};
-    // cout<<obj3.cost(3,5,arr)<<endl;
-    // memoization
-    // vector<int> dp(arr.size(),-1);
-    // cout<<obj3.cost1(3,4,arr,dp)<<endl;
+     // jumpII obj3;
+     // vector<int> arr = {0,1,3,6,9,12};
+     // cout<<obj3.cost(3,5,arr)<<endl;
+     // memoization
+     // vector<int> dp(arr.size(),-1);
+     // cout<<obj3.cost1(3,4,arr,dp)<<endl;
 
     //^ House Robber I
-    // Solution obj4;
-    // vector<int> nums = {2, 7, 9, 3, 1};
-    //  //! simple recursion
-    // cout << obj4.solve(nums, nums.size() - 1) << endl;
-    //! // memoization
-    // vector<int> dp(nums.size(), -1);
-    // cout << obj4.solve1(nums, nums.size() - 1, dp) << endl;
-    //! // tabulation
-    // cout << obj4.solve2(nums) << endl;
-    // cout << obj4.solve3(nums) << endl;
+     // Solution obj4;
+     // vector<int> nums = {2, 7, 9, 3, 1};
+     //  //! simple recursion
+     // cout << obj4.solve(nums, nums.size() - 1) << endl;
+     //! // memoization
+     // vector<int> dp(nums.size(), -1);
+     // cout << obj4.solve1(nums, nums.size() - 1, dp) << endl;
+     //! // tabulation
+     // cout << obj4.solve2(nums) << endl;
+     // cout << obj4.solve3(nums) << endl;
 
     //^ House Robber II
-    // house_robber obj5;
-    // vector<int> nums = {114,117,207,117,235,82,90,67,143,146,53,108,200,91,80,223,58,170,110,236,81,90,222,160,165,195,187,199,114,235,197,187,69,129,64,214,228,78,188,67,205,94,205,169,241,202,144,240}; // answer = 4077
-    // //! simple recursion 
-    //  cout << obj5.solve(nums, nums.size() - 1) << endl;
-    //! memoization
-    //  cout << obj5.rob(nums) << endl;
-    //! tabulation
-    //  cout << obj5.solve2(nums) << endl;
-    // //! tabulation with space optimization 
-    // cout << obj5.robII(nums) << endl;
+     // house_robber obj5;
+     // vector<int> nums = {114,117,207,117,235,82,90,67,143,146,53,108,200,91,80,223,58,170,110,236,81,90,222,160,165,195,187,199,114,235,197,187,69,129,64,214,228,78,188,67,205,94,205,169,241,202,144,240}; // answer = 4077
+     // //! simple recursion 
+     //  cout << obj5.solve(nums, nums.size() - 1) << endl;
+     //! memoization
+     //  cout << obj5.rob(nums) << endl;
+     //! tabulation
+     //  cout << obj5.solve2(nums) << endl;
+     // //! tabulation with space optimization 
+     // cout << obj5.robII(nums) << endl;
 
     //^ Ninja Training Problem 
-    // Ninja_traning obj6;
-    // vector<vector<int>> points = {{1,2,3},{4,5,6},{7,8,9}};
-    // int n = points.size();
-    // vector<vector<int>> dp(n, vector<int>(4, -1)); // Initialize dp table
-    // cout << obj6.solve(n-1, 3, points) << endl; //! Simple Recursion
-    // cout << obj6.solve1(n-1, 3, points, dp) << endl; //! Memoization
-    // cout << obj6.solve2(n, points) << endl; //! Tabulation
+     // Ninja_traning obj6;
+     // vector<vector<int>> points = {{1,2,3},{4,5,6},{7,8,9}};
+     // int n = points.size();
+     // vector<vector<int>> dp(n, vector<int>(4, -1)); // Initialize dp table
+     // cout << obj6.solve(n-1, 3, points) << endl; //! Simple Recursion
+     // cout << obj6.solve1(n-1, 3, points, dp) << endl; //! Memoization
+     // cout << obj6.solve2(n, points) << endl; //! Tabulation
+
     
     //^ Unique Paths
-    UniquePaths obj;
-    int m = 3, n = 7;                        // 3 rows and 7 columns
-    cout << obj.solve(m - 1, n - 1) << endl; // simple recursion
-    vector<vector<int>> dp(m, vector<int>(n, -1)); // Initialize dp table
-    cout << obj.solve1(m - 1, n - 1, dp) << endl; // memoization
-    cout << obj.solve2(m, n) << endl; // tabulation
-    cout << obj.solve3(m, n) << endl; // tabulation with space optimization
+     // UniquePaths obj;
+     // int m = 3, n = 7;                        // 3 rows and 7 columns
+     // cout << obj.solve(m - 1, n - 1) << endl; // simple recursion
+     // vector<vector<int>> dp(m, vector<int>(n, -1)); // Initialize dp table
+     // cout << obj.solve1(m - 1, n - 1, dp) << endl; // memoization
+     // cout << obj.solve2(m, n) << endl; // tabulation
+     // cout << obj.solve3(m, n) << endl; // tabulation with space optimization
 
     
 
