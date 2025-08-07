@@ -514,6 +514,14 @@ class UniquePaths {
 
 };
 
+//!3363. Find the Maximum Number of Fruits Collected
+class Fruits{
+    public:
+    //^ simple recursion  
+}
+
+
+
 int main (){
    
     //^ Fibonacci Series using Dynamic Programming
@@ -584,6 +592,7 @@ int main (){
      // cout << obj.solve3(m, n) << endl; // tabulation with space optimization
 
     
+
 
     return 0;
 }
