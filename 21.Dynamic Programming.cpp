@@ -518,6 +518,146 @@ class UniquePaths {
 class Fruits{
     public:
     //^ simple recursion  
+    int n; 
+    int child1Collected(vector<vector<int>>& fruits) {
+        // collecting the digoanal fruits from i to j 
+        int count = 0; 
+        for (int k = i; k <= j; k++) {
+            count += fruits[k];
+        }
+        return count;
+    }
+
+    int child2Collected(int i, int j, vector<vector<int>>& fruits) {
+        // base case 
+         if( i <0 || i>= n || j < 0 || j >= n) return 0; // out of bounds case
+        
+        // reach to the last room the fruit is already collected by child 1 that why we return 0
+        if(i == n-1 && j == n-1) return 0; // last row and first column case
+        
+        // cant go other side of digoanal and cant collect digonal fruits 
+        // if you go other side then less moves reamin go back to last Room
+        if(i == j || i > j) return 0; 
+
+
+        int bottomLeft =fruits[i][j] + child2Collected(i + 1, j - 1, fruits);
+        int bottomDown = fruits[i][j] + child2Collected(i + 1, j, fruits);
+        int bottomRight = fruits[i][j] + child2Collected(i + 1, j + 1, fruits);
+        
+        // return the maximum of the three options
+        return max({bottomLeft, bottomDown, bottomRight});
+
+    }
+
+    int child3Collected(int i, int j, vector<vector<int>>& fruits) {
+        // base case 
+        if( i <0 || i>= n || j < 0 || j >= n) return 0; // out of bounds case
+        
+        // reach to the last room the fruit is already collected by child 1 that why we return 0
+        if(i == n-1 && j == n-1) return 0; // last row and first column case
+        
+        if(i == j || i > j) return 0; // cant go other side of digoanal and cant collect digonal fruits
+        
+        // collect the fruits from the digoanal and its child 
+        // child 1 collected fruits from i to j 
+        // child 2 collected fruits from i+1 to j-1 
+        // child 3 collected fruits from i+1 to j+1
+        int upRight =fruits[i][j] + child3Collected(i-j,j+1, fruits);
+        int right = fruits[i][j] + child3Collected(i, j+1, fruits);
+        int bottomRight = fruits[i][j] + child3Collected(i+1, j+1, fruits);
+        
+        // return the maximum of the three options
+        return max({upRight, right, bottomRight});
+
+    }
+
+    //! memorization 
+    // 2-d since two parameters are changing
+    vector<vector<int>> dp2, dp3;
+    int child1Collected(vector<vector<int>>& fruits) {
+        // collecting the digoanal fruits from i to j
+        int count = 0;
+        for (int k = 0; k < n; k++) {
+            count += fruits[k][k];
+            fruits[k][k] = 0;
+        }
+        return count;
+    }
+
+    //! memorization
+    int child2Collectedmemo(int i, int j, vector<vector<int>>& fruits) {
+        // base case
+        if (i < 0 || i >= n || j < 0 || j >= n)
+            return 0; // out of bounds case
+
+        // reach to the last room the fruit is already collected by child 1 that
+        // why we return 0
+        if (i == n - 1 && j == n - 1)
+            return 0; // last row and first column case
+
+        // cant go other side of digoanal and cant collect digonal fruits
+        // if you go other side then less moves reamin go back to last Room
+        if (i == j || i > j)
+            return 0;
+
+        if (dp2[i][j] != -1)
+            return dp2[i][j]; // check if already calculated
+
+        int bottomLeft =
+            fruits[i][j] + child2Collectedmemo(i + 1, j - 1, fruits);
+        int bottomDown = fruits[i][j] + child2Collectedmemo(i + 1, j, fruits);
+        int bottomRight =
+            fruits[i][j] + child2Collectedmemo(i + 1, j + 1, fruits);
+
+        // return the maximum of the three options
+        return dp2[i][j] = max({bottomLeft, bottomDown, bottomRight});
+    }
+
+    int child3Collectedmemo(int i, int j, vector<vector<int>>& fruits) {
+        // base case
+        if (i < 0 || i >= n || j < 0 || j >= n)
+            return 0; // out of bounds case
+
+        // reach to the last room the fruit is already collected by child 1 that
+        // why we return 0
+        if (i == n - 1 && j == n - 1)
+            return 0; // last row and first column case
+
+        if (i == j || j > i)
+            return 0; // cant go other side of digoanal and cant collect digonal
+                      // fruits
+
+        if (dp3[i][j] != -1)
+            return dp3[i][j]; // check if already calculated
+
+        int upRight = fruits[i][j] + child3Collectedmemo(i - 1, j + 1, fruits);
+        int right = fruits[i][j] + child3Collectedmemo(i, j + 1, fruits);
+        int bottomRight =
+            fruits[i][j] + child3Collectedmemo(i + 1, j + 1, fruits);
+
+        // return the maximum of the three options
+        return dp3[i][j] = max({upRight, right, bottomRight});
+    }
+
+    int maxCollectedFruits(vector<vector<int>>& fruits) {
+        n = fruits.size();
+        dp2.resize(n, vector<int>(n, -1)); // Initialize dp table with -1
+        dp3.resize(n, vector<int>(n, -1)); // Initialize dp table with -1
+        
+        //! simple recursion
+        // // collect digoanal fruits only 
+        // int c1 = child1Collected(fruits); 
+        // // required the recursion for child 2 by sending the array and its starting postion
+        // int c2 = child2Collected(0, n-1,fruits);
+        // // required the recursion for child 3 by sending the array and its starting postion
+        // int c3 = child3Collected(n-1, 0,fruits);
+        // return c1 + c2 + c3; // return the total fruits collected by all three children
+
+        //! memoization approach
+        int c1 = child1Collected(fruits);
+        int c2 = child2Collectedmemo(0, n - 1, fruits);
+        int c3 = child3Collectedmemo(n - 1, 0, fruits);
+        return c1 + c2 + c3; 
 }
 
 
