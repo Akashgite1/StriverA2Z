@@ -644,12 +644,14 @@ class Fruits{
         dp2.resize(n, vector<int>(n, -1)); // Initialize dp table with -1
         dp3.resize(n, vector<int>(n, -1)); // Initialize dp table with -1
         
-        //! simple recursion
-        // // collect digoanal fruits only 
+        //! Simple Recursion
+        // collect digoanal fruits only 
         // int c1 = child1Collected(fruits); 
-        // // required the recursion for child 2 by sending the array and its starting postion
+
+        // required the recursion for child 2 by sending the array and its starting postion
         // int c2 = child2Collected(0, n-1,fruits);
-        // // required the recursion for child 3 by sending the array and its starting postion
+
+        // required the recursion for child 3 by sending the array and its starting postion
         // int c3 = child3Collected(n-1, 0,fruits);
         // return c1 + c2 + c3; // return the total fruits collected by all three children
 
@@ -658,6 +660,7 @@ class Fruits{
         int c2 = child2Collectedmemo(0, n - 1, fruits);
         int c3 = child3Collectedmemo(n - 1, 0, fruits);
         return c1 + c2 + c3; 
+    }
 }
 
 
