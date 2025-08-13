@@ -85,8 +85,8 @@ If you have an optimized solution or a different approach, feel free to:
 
 📞 Connect with Me
 
-📧 Email: akashgite550@gmail.com
-💼 LinkedIn: Akash Gite
-💻 GitHub: Akashgite1
+📧 Email:akashgite550@gmail.com
+💼 LinkedIn: [Akash Gite](https://www.linkedin.com/in/akash-gite-257a4323b/)
+💻 GitHub: [Akashgite1](https://github.com/Akashgite1)
 
 🚀 Let’s master DSA together!
