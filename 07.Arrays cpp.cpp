@@ -1343,8 +1343,65 @@ void Spiral_Matrix_print(int arr[4][4], int n, int m)
    
 }
 
+//! find the repeating and missing number in an array
+class findMissingRepeatingNumbers_IN_Array {
+   public:
+    vector<int> findMissingRepeatingNumbers(vector<int> nums) {
+          long n = nums.size();
+    
+    long sumN = n * (n + 1) / 2;       // expected sum of 1..n
+    long sumSqN = n * (n + 1) * (2*n + 1) / 6; // expected sum of squares
+
+    long sum = 0, sumSq = 0;
+    for (int x : nums) {
+        sum += x;
+        sumSq += 1L * x * x;
+    }
+
+    // equations:
+    // A - B = sum - sumN
+    // A^2 - B^2 = sumSq - sumSqN
+    // => (A - B)(A + B) = diffSq
+    long diff = sum - sumN;             // A - B
+    long diffSq = sumSq - sumSqN;       // A^2 - B^2
+
+    long sumAB = diffSq / diff;         // A + B
+
+    long A = (diff + sumAB) / 2;
+    long B = A - diff;
+
+    return {(int)A, (int)B};
+    }
+};
+
+//! 152. Maximum Product Subarray
+class Maximum_Product_Subarray {
+public:
+    int maxProduct(vector<int>& nums) {
+        // sliding window approach
+        int n = nums.size();
+        int maxProduct = nums[0];
+        int currentProduct = 1;
+
+        for (int i = 0; i < n; i++) {
+            currentProduct *= nums[i];
+            maxProduct = max(maxProduct, currentProduct);
+            if (currentProduct == 0) {
+                currentProduct = 1; // reset if product is zero
+            }                           
+        }
+        
+    }
+};
+
+
 int main()
 {
+    // vector<int> nums = {1, 2, 3, 6, 7, 5, 7};
+    // findMissingRepeatingNumbers_IN_Array obj;
+    // vector<int> result = obj.findMissingRepeatingNumbers(nums);
+    // cout << "Repeating Number: " << result[0] << endl;
+    // cout << "Missing Number: " << result[1] << endl;
 
 
 
