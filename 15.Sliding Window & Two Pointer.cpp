@@ -389,6 +389,7 @@ int f(vector<int> &nums, int k)
     }
     return cnt;
 }
+
 int subarraysWithKDistinct(vector<int> &nums, int k)
 {
     // so we are getting for the first k element

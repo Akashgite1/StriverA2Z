@@ -16,7 +16,7 @@ struct Node{
     }
 };
 
-//! Recursion is the process in which a function calls itself unit a base condition is reached.
+//! Recursion is the process in which a function calls itself until a base condition is reached.
 //~ a base condition is a condition where the recursion stops.
 //~ recursion means repeating the same thing again and again.
 

@@ -187,12 +187,14 @@ vector<vector<int>> levelOrder(struct Node *root)
             // pop the front element from the queue
             q.pop();
             // push the data of the node that store in the queue since we store direct node
-            // queue has the pointer to the node so we have to get the data of the node 
+            // queue has the pointer to the node so we have to get the data of the node
 
             level.push_back(node->data);
-            // we are pushing the node not its data 
-            if (node->left != NULL) q.push(node->left);
-            if (node->right != NULL) q.push(node->right);
+            // we are pushing the node not its data
+            if (node->left != NULL)
+                q.push(node->left);
+            if (node->right != NULL)
+                q.push(node->right);
         }
 
         ans.push_back(level);
@@ -306,24 +308,24 @@ vector<int> postorderTraversal_Iterative(struct Node *root)
     }
     return ans;
 }
-//! calculate the number of nodes at each level 
-int LevelNode(int i){
+//! calculate the number of nodes at each level
+int LevelNode(int i)
+{
 
-    // 2^i we return since the number of nodes at each level is 2^i 
-    return pow(2,i);
-    
+    // 2^i we return since the number of nodes at each level is 2^i
+    return pow(2, i);
+
     // tree            1        level 0
     //               /   \
     //              2     3     level 1
     //             / \   / \
     //            4   5 6   7   level 2
-    // 2^0 = 1 her we are following the 0 based index so the level 0 has 1 node 
-    // we can use bit manipulation to calculate the 2^i 
-    // return 1 << i;  if we follow the 1 based indexing we can return 1 << (i-1) 
-  
+    // 2^0 = 1 her we are following the 0 based index so the level 0 has 1 node
+    // we can use bit manipulation to calculate the 2^i
+    // return 1 << i;  if we follow the 1 based indexing we can return 1 << (i-1)
 }
 
-//! Height of the binary tree 
+//! Height of the binary tree
 // 104. Maximum Depth of Binary Tree
 //                        3
 //                     /   \
@@ -332,8 +334,8 @@ int LevelNode(int i){
 //                        15    7
 // height of the tree is 3 since the longest path from the root to the leaf node is 3
 int height(struct Node *root)
-{   
-    //~ recuresive approach to calculate the height of the binary tree 
+{
+    //~ recuresive approach to calculate the height of the binary tree
     // if (root == NULL)
     // {
     //     return 0;
@@ -341,14 +343,15 @@ int height(struct Node *root)
     // int left = height(root->left);
     // int right = height(root->right);
     // return max(left, right) + 1;
-    // +1 if we considering the 1base indexing 
-    // return max(left, right); its ok if we considering the 0 based indexing 
-
+    // +1 if we considering the 1base indexing
+    // return max(left, right); its ok if we considering the 0 based indexing
 
     //~ using the breath first search and dfs depth first search (BFS)
-    if (!root) return 0;
+    if (!root)
+        return 0;
 
-    if (!root->left && !root->right) return 1;
+    if (!root->left && !root->right)
+        return 1;
 
     queue<Node *> que;
     que.push(root);
@@ -364,10 +367,13 @@ int height(struct Node *root)
             Node *temp = que.front();
             que.pop();
 
-            if (!temp->left && !temp->right) return depth;
+            if (!temp->left && !temp->right)
+                return depth;
 
-            if (temp->left) que.push(temp->left);
-            if (temp->right) que.push(temp->right);
+            if (temp->left)
+                que.push(temp->left);
+            if (temp->right)
+                que.push(temp->right);
         }
 
         depth++;
@@ -377,12 +383,15 @@ int height(struct Node *root)
 }
 
 //! Diameter of the binary tree
-class Solution {
+class Solution
+{
 public:
-    int solve(Node* root, int& result) {
-        
-        // condition to stop 
-        if(!root) return 0;
+    int solve(Node *root, int &result)
+    {
+
+        // condition to stop
+        if (!root)
+            return 0;
         int leftH = solve(root->left, result);
         int rightH = solve(root->right, result);
 
@@ -390,11 +399,13 @@ public:
 
         return max(leftH, rightH) + 1;
     }
-    
-    int diameterOfBinaryTree(Node* root) { 
-        int result = 0; 
 
-        if(root ==  NULL) return 0;
+    int diameterOfBinaryTree(Node *root)
+    {
+        int result = 0;
+
+        if (root == NULL)
+            return 0;
 
         solve(root, result);
 
@@ -409,18 +420,23 @@ public:
 //                   /   \
 //                  9     20
 //                      /   \
-//                     15    7        ans : true 
+//                     15    7        ans : true
 // return true since the height of the left subtree and right subtree is not more than 1
-class Balanced{
+class Balanced
+{
 public:
-    int height(Node* root) {
-        if(!root) return 0;
+    int height(Node *root)
+    {
+        if (!root)
+            return 0;
         int left = height(root->left);
         int right = height(root->right);
-        if(left == -1 || right == -1 || abs(left - right) > 1) return -1;
+        if (left == -1 || right == -1 || abs(left - right) > 1)
+            return -1;
         return max(left, right) + 1;
     }
-    bool isBalanced(Node* root) {
+    bool isBalanced(Node *root)
+    {
         return height(root) != -1;
     }
 };
@@ -434,26 +450,31 @@ public:
 // zigzag level order traversal   [[3],[20,9],[15,7]]
 vector<vector<int>> zigzagLevelOrder(Node *root)
 {
-    if (!root) return {}; // Return empty if the tree is empty
+    if (!root)
+        return {}; // Return empty if the tree is empty
 
     vector<vector<int>> result; // Final result
     queue<Node *> q;            // Queue for BFS
     q.push(root);
     bool leftToRight = true; // Direction flag
 
-    while (!q.empty()){
+    while (!q.empty())
+    {
         int size = q.size();
         deque<int> level; // Use deque to handle zigzag order
 
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++)
+        {
             Node *node = q.front();
             q.pop();
-            
+
             // direction is left to right
-            if (leftToRight){
+            if (leftToRight)
+            {
                 level.push_back(node->data); // Add to the end
             }
-            else{
+            else
+            {
                 level.push_front(node->data); // Add to the front for reverse order
             }
 
@@ -471,25 +492,29 @@ vector<vector<int>> zigzagLevelOrder(Node *root)
 }
 
 //! 124. Binary Tree Maximum Path Sum
-class maxPathSumClass {
+class maxPathSumClass
+{
 public:
-    int maxpath(Node* node, int& maxi){
-        if(node == NULL) return 0;
-        
+    int maxpath(Node *node, int &maxi)
+    {
+        if (node == NULL)
+            return 0;
+
         // we provide the 2 parameters inside the max one is 0 and another one is
         // recursion of maxpath is the recursion of maxpath provide the negative value
-        // we will return 0 insted of taking that negative value 
+        // we will return 0 insted of taking that negative value
         // since the negative value never provide as the max sum
-        int left = max(0 , maxpath(node->left,maxi));
+        int left = max(0, maxpath(node->left, maxi));
 
-        int right = max(0, maxpath(node->right,maxi));
+        int right = max(0, maxpath(node->right, maxi));
 
         maxi = max(maxi, left + right + node->data);
 
-        return max(left,right) + node->data;
+        return max(left, right) + node->data;
     }
-    // main function 
-    int maxPathSum(Node* root) {
+    // main function
+    int maxPathSum(Node *root)
+    {
         int maxi = INT_MIN;
 
         maxpath(root, maxi);
@@ -497,23 +522,29 @@ public:
     } // TC O(n) SC O(1)
 };
 
-//! check if two binary tree are similar or not 
+//! check if two binary tree are similar or not
 //~ 100. Same Tree
-bool isSameTree(Node* p, Node* q) {
-    if(p == NULL && q == NULL) return true;
-    if(p == NULL || q == NULL) return false;
-    if(p->data != q->data) return false;
+bool isSameTree(Node *p, Node *q)
+{
+    if (p == NULL && q == NULL)
+        return true;
+    if (p == NULL || q == NULL)
+        return false;
+    if (p->data != q->data)
+        return false;
     return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
 }
 
-//! boundary traversal of the binary tree 
+//! boundary traversal of the binary tree
 //~ 545. Boundary of Binary Tree
-class boundary{
+class boundary
+{
 public:
     void leftBoundary(Node *root, vector<int> &ans)
     {
         // if the root is null then return
-        if (!root) return;
+        if (!root)
+            return;
         // if the left child is present then push the data of the root node
         if (root->left)
         {
@@ -525,8 +556,8 @@ public:
         {
             ans.push_back(root->data);
             leftBoundary(root->right, ans);
-        } 
-        // store elements upto the leaf node 
+        }
+        // store elements upto the leaf node
     }
 
     void rightBoundary(Node *root, vector<int> &ans)
@@ -554,7 +585,7 @@ public:
         if (!root)
             return;
         // check if the node left and right child are null
-        // if yes then its a leaf node since leaf node has no child 
+        // if yes then its a leaf node since leaf node has no child
         if (!root->left && !root->right)
         {
             ans.push_back(root->data);
@@ -579,29 +610,36 @@ public:
     }
 };
 
-//! vertical order traversal of the binary tree 
+//! vertical order traversal of the binary tree
 //~ 987. Vertical Order Traversal of a Binary Tree
-vector<vector<int>> verticalTraversal(Node* root){
+vector<vector<int>> verticalTraversal(Node *root)
+{
     map<int, map<int, multiset<int>>> mp;
-    queue<pair<Node*, pair<int, int>>> q;
+    queue<pair<Node *, pair<int, int>>> q;
     q.push({root, {0, 0}});
 
-    while(!q.empty()){
+    while (!q.empty())
+    {
         auto p = q.front();
         q.pop();
-        Node* node = p.first;
+        Node *node = p.first;
         int x = p.second.first;
         int y = p.second.second;
         mp[x][y].insert(node->data);
-        if(node->left) q.push({node->left, {x - 1, y + 1}});
-        if(node->right) q.push({node->right, {x + 1, y + 1}});
+        if (node->left)
+            q.push({node->left, {x - 1, y + 1}});
+        if (node->right)
+            q.push({node->right, {x + 1, y + 1}});
     }
 
     vector<vector<int>> ans;
-    for(auto x : mp){
+    for (auto x : mp)
+    {
         vector<int> temp;
-        for(auto y : x.second){
-            for(auto z : y.second){
+        for (auto y : x.second)
+        {
+            for (auto z : y.second)
+            {
                 temp.push_back(z);
             }
         }
@@ -610,101 +648,114 @@ vector<vector<int>> verticalTraversal(Node* root){
     return ans;
 }
 
-//! Top View of the binary tree using Level Order Traversal 
-class Top_View{
-  public:
+//! Top View of the binary tree using Level Order Traversal
+class Top_View
+{
+public:
     // Function to return a list of nodes visible from the top view
     // from left to right in Binary Tree.
-    vector<int> topView(Node *root) {
-        
+    vector<int> topView(Node *root)
+    {
+
         // declaring vector for storing the answer
         vector<int> ans;
-        
-        // if root is null return ans 
-        if(root == NULL) return ans;
-        
+
+        // if root is null return ans
+        if (root == NULL)
+            return ans;
+
         // map store the element in sorted oreder
-        map<int,int> mpp;
-        
+        map<int, int> mpp;
+
         // queue for storing node and its order
-        queue<pair<Node*, int>> q;
-        
-        // push the root and its level into queue 
+        queue<pair<Node *, int>> q;
+
+        // push the root and its level into queue
         q.push({root, 0});
-        
-        while(!q.empty()){
-            
-            // pointer to the queue front element 
-            auto  it = q.front();
-            //remove the pointed element from the queue
+
+        while (!q.empty())
+        {
+
+            // pointer to the queue front element
+            auto it = q.front();
+            // remove the pointed element from the queue
             q.pop();
-            
-            // poiting the stored queue node which is a tree node since we 
-            // are storing pair of node and int in queue 
-            Node* node = it.first;
-            
+
+            // poiting the stored queue node which is a tree node since we
+            // are storing pair of node and int in queue
+            Node *node = it.first;
+
             // poiting the line storing with the node in the queue
             int line = it.second;
-            
-            // put the line and data or the node value into map only if 
+
+            // put the line and data or the node value into map only if
             // there are not present in the map first
-            if(mpp.find(line) == mpp.end()){
+            if (mpp.find(line) == mpp.end())
+            {
                 mpp[line] = node->data;
             }
-            
-            // add selected node left and right node into queue with line 
+
+            // add selected node left and right node into queue with line
             // for left we are sending line-1
-            if(node->left != NULL) q.push({node->left, line-1});
-            // for right we are sending l(ine +1 
-            if(node->right != NULL) q.push({node->right, line+1});
-            
+            if (node->left != NULL)
+                q.push({node->left, line - 1});
+            // for right we are sending l(ine +1
+            if (node->right != NULL)
+                q.push({node->right, line + 1});
         }
-        
+
         // store the map element into vector for declaring answer
-        for(auto it : mpp){
+        for (auto it : mpp)
+        {
             ans.push_back(it.second);
         }
         return ans;
-        
     }
 };
 
 //! Bottom View of Binary Tree
-class Bottom_View {
-  public:
-    vector <int> bottomView(Node *root) {
-        
+class Bottom_View
+{
+public:
+    vector<int> bottomView(Node *root)
+    {
+
         // declaring the vector for answer
         vector<int> ans;
-        
+
         // if root is null return  ans
-        if(root == NULL) return ans;
-        
+        if (root == NULL)
+            return ans;
+
         // map to store the element in sorted order
-        map<int,int> mpp;
+        map<int, int> mpp;
         // queue for storing the node and its order
-        queue<pair<Node*, int>> q;
+        queue<pair<Node *, int>> q;
         // push the root and its line into queue
         q.push({root, 0});
         // while the queue is not empty
-        while(!q.empty()){
+        while (!q.empty())
+        {
             // pointer to the front element of the queue
             auto it = q.front();
             // remove the front element from the queue
             q.pop();
             // point the node and line of the node
-            Node* node = it.first;
+            Node *node = it.first;
             // line of the node
             int line = it.second;
             // put the line and data of the node into map
             mpp[line] = node->data;
-            
+
             // push the left and right child of the node into queue
-            if(node->left != NULL) q.push({node->left, line-1});
-            if(node->right != NULL) q.push({node->right, line+1});
+            if (node->left != NULL)
+                q.push({node->left, line - 1});
+            if (node->right != NULL)
+                q.push({node->right, line + 1});
         }
         // store the map element into vector for declaring answer
-        for(auto it : mpp){
+        for (auto it : mpp)
+        {
             ans.push_back(it.second);
         }
         return ans;
@@ -712,18 +763,22 @@ class Bottom_View {
 };
 
 //! 199. Binary Tree Right Side View
-class Right_Side_View{
+class Right_Side_View
+{
 public:
-    // recursive function 
-    void recursion(Node* root , int level, vector<int>&res){
-        // base case 
-        if(root == NULL) return;
-        if(res.size() == level) res.push_back(root->data);
-        recursion(root->right, level+1, res);
-        recursion(root->left, level+1 , res);
-
+    // recursive function
+    void recursion(Node *root, int level, vector<int> &res)
+    {
+        // base case
+        if (root == NULL)
+            return;
+        if (res.size() == level)
+            res.push_back(root->data);
+        recursion(root->right, level + 1, res);
+        recursion(root->left, level + 1, res);
     }
-    vector<int> rightSideView(Node* root) {
+    vector<int> rightSideView(Node *root)
+    {
         vector<int> res;
         recursion(root, 0, res);
         return res;
@@ -731,9 +786,11 @@ public:
 };
 
 //! 101. Symmetric Tree
-class Symmetric {
+class Symmetric
+{
 public:
-    bool symmetricReccursion(Node* left, Node* right) {
+    bool symmetricReccursion(Node *left, Node *right)
+    {
         // if both are null return true if one of them are null return false
         if (left == NULL || right == NULL)
             return left == right;
@@ -745,20 +802,20 @@ public:
         return symmetricReccursion(left->left, right->right) &&
                symmetricReccursion(left->right, right->left);
     }
-    bool isSymmetric(Node* root) {
+    bool isSymmetric(Node *root)
+    {
         return root == NULL || symmetricReccursion(root->left, root->right);
     }
 };
 
-//! 
-
+//!
 
 int main()
-{ 
-    //~ struct is the name of custom data structure 
+{
+    //~ struct is the name of custom data structure
     //~ Node is the name of the structure which used to access the data
-    //~ root is the name and the pointer to new node or data created using 
-    //~ the struct data structure 
+    //~ root is the name and the pointer to new node or data created using
+    //~ the struct data structure
     //~ new keyword is used to create a new data from the struct data structure
 
     //! creating a root node
@@ -766,32 +823,32 @@ int main()
     // creating left and right child of the root node
     // root->left = new Node(2);
     // root->right = new Node(3);                    // 1
-                                                   // /   \
+    // /   \
                                                   // 2     3
     // creating left and right child of the left child of the root node
     // root->left->left = new Node(4);
     // root->left->right = new Node(5);            // 1
-                                                 // /   \
+    // /   \
                                                  // 2     3
-                                                // / \
+    // / \
                                                // 4   5
     // creating left and right child of the right child of the root node
     // root->right->left = new Node(6);              // 1
     // root->right->right = new Node(7);           // /   \
                                                   // 2     3
-                                                // / \    / \
+    // / \    / \
                                                 // 4   5 6   7
-    
-    //!                        Binary Traversal 
 
-    //! Inorder Traversal : left -> root -> right 
+    //!                        Binary Traversal
+
+    //! Inorder Traversal : left -> root -> right
     // inorder(root);
     // cout << endl;
 
     //! Preorder Traversal : root -> left -> right
     // preorder(root);
     // cout << endl;
-    
+
     //! Postorder Traversal : left -> right -> root
     // postorder(root);
     // cout << endl;
@@ -847,11 +904,11 @@ int main()
 
     //! diameter of the binary tree
     //         tree contructed
-    //                1           
+    //                1
     //              /   \
     //             2     3
     //            / \   
-    //           4   5 
+    //           4   5
     // struct Node *root = new Node(1);
     // root->left = new Node(2);
     // root->right = new Node(3);
@@ -859,7 +916,7 @@ int main()
     // root->left->right = new Node(5);
     // Solution s;
     // cout << s.diameterOfBinaryTree(root) << endl;
-    
+
     //! 110. Balanced Binary Tree
     // struct Node *root = new Node(3);
     // root->left = new Node(9);
@@ -869,10 +926,10 @@ int main()
     // Balanced b;
     // if(b.isBalanced(root)){
     //    cout << "yes the tree is balanced" << endl;
-    // }else{ 
+    // }else{
     //     cout << "false" << endl;
     // }
-    
+
     //! 103. Binary Tree Zigzag Level Order Traversal
     // struct Node *root = new Node(3);
     // root->left = new Node(9);
@@ -888,7 +945,7 @@ int main()
     //     }
     //     cout << endl;
     // }
-    
+
     //! 124. Binary Tree Maximum Path Sum
     // struct Node *root = new Node(1);
     // root->left = new Node(2);
@@ -929,8 +986,8 @@ int main()
     // {
     //     cout << ans[i] << " ";
     // }
-    // cout << endl; // 1 2 3 5 6 10 11 12 13 9 7 
-    
+    // cout << endl; // 1 2 3 5 6 10 11 12 13 9 7
+
     //! 987. Vertical Order Traversal of a Binary Tree
     // struct Node *root = new Node(3);
     // root->left = new Node(9);
@@ -960,7 +1017,7 @@ int main()
     //     cout << ans[i] << " ";
     // }
     // cout << endl;
-    
+
     //! 101. Symmetric Tree
     // struct Node *root = new Node(1);
     // root->left = new Node(2);
@@ -974,8 +1031,6 @@ int main()
     // }else{
     //     cout << "no the tree is not symmetric" << endl;
     // }
- 
-
 
     return 0;
 }
